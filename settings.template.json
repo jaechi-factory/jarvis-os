@@ -1,0 +1,52 @@
+{
+  "_comment": "Claude Code 환경 템플릿. 새 PC/계정에서 setup.sh 실행 후 이 파일을 settings.json에 병합하거나 기반으로 사용.",
+
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    }
+  },
+
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Read(~/.claude/**)",
+      "Write(~/.claude/**)",
+      "Edit(~/.claude/**)",
+      "Read(/private/tmp/**)",
+      "Write(/private/tmp/**)",
+      "Edit(/private/tmp/**)"
+    ],
+    "_comment_projects": "작업 프로젝트마다 아래 3줄 패턴으로 추가. 예: Read(/Users/{username}/{project}/**)"
+  },
+
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c '\ninput=$(cat)\ncmd=$(echo \"$input\" | python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get(\\\"tool_input\\\",{}).get(\\\"command\\\",\\\"\\\"))\" 2>/dev/null)\nexit_code=$(echo \"$input\" | python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get(\\\"tool_response\\\",{}).get(\\\"exit_code\\\",0))\" 2>/dev/null)\nstdout=$(echo \"$input\" | python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get(\\\"tool_response\\\",{}).get(\\\"stdout\\\",\\\"\\\"))\" 2>/dev/null)\nstderr=$(echo \"$input\" | python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get(\\\"tool_response\\\",{}).get(\\\"stderr\\\",\\\"\\\"))\" 2>/dev/null)\n\nif echo \"$cmd\" | grep -qiE \"tsc|typecheck|type-check|npm run build|pnpm run build|yarn build|npm run test|pnpm test|jest|vitest\"; then\n  result_file=\"/private/tmp/claude-build-result.txt\"\n  output=\"$stdout$stderr\"\n  line_count=$(echo \"$output\" | wc -l | tr -d \" \")\n  if [ \"$exit_code\" -ne 0 ] 2>/dev/null; then\n    status=\"FAIL\"\n  else\n    status=\"PASS\"\n  fi\n  echo \"CMD=$cmd\" > \"$result_file\"\n  echo \"STATUS=$status\" >> \"$result_file\"\n  echo \"LINES=$line_count\" >> \"$result_file\"\n  echo \"EXIT=$exit_code\" >> \"$result_file\"\n  if [ \"$line_count\" -gt 100 ] && [ \"$status\" = \"FAIL\" ]; then\n    echo \"SUMMARY=LOG_TRUNCATED\" >> \"$result_file\"\n    echo \"$output\" | tail -20 >> \"$result_file\"\n  else\n    echo \"$output\" >> \"$result_file\"\n  fi\nfi\nexit 0\n'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c '\nresult_file=\"/private/tmp/claude-build-result.txt\"\nif [ -f \"$result_file\" ]; then\n  status=$(grep \"^STATUS=\" \"$result_file\" | cut -d= -f2)\n  cmd=$(grep \"^CMD=\" \"$result_file\" | cut -d= -f2- | head -c 80)\n  lines=$(grep \"^LINES=\" \"$result_file\" | cut -d= -f2)\n  exit_code=$(grep \"^EXIT=\" \"$result_file\" | cut -d= -f2)\n  summary=$(grep \"^SUMMARY=\" \"$result_file\" | cut -d= -f2)\n\n  echo \"\"\n  echo \"━━━ 빌드/테스트 결과 ━━━\"\n  if [ \"$status\" = \"PASS\" ]; then\n    echo \"✅ 통과: $cmd\"\n  else\n    echo \"❌ 실패: $cmd\"\n    echo \"⚠️  완료 선언 전 위 오류를 확인하세요.\"\n    if [ \"$summary\" = \"LOG_TRUNCATED\" ]; then\n      echo \"[로그 축약 — 전체 ${lines}줄 중 마지막 20줄만 표시]\"\n    fi\n  fi\n  echo \"━━━━━━━━━━━━━━━━━━━━━━\"\n\n  rm -f \"$result_file\"\nfi\nexit 0\n'"
+          }
+        ]
+      }
+    ]
+  }
+}

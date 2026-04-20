@@ -1,0 +1,45 @@
+# 개인 세션·히스토리
+sessions/
+history.jsonl
+file-history/
+shell-snapshots/
+
+# 메모리 (개인 기억·프로젝트별)
+projects/
+
+# IDE·MCP 인증 토큰
+ide/
+mcp-needs-auth-cache.json
+
+# 로그·디버그·텔레메트리
+logs/
+debug/
+telemetry/
+metrics/
+session-env/
+
+# 캐시
+cache/
+downloads/
+plans/
+homunculus/
+
+# 플러그인 캐시 (installed_plugins.json만 추적)
+plugins/cache/
+plugins/blocklist.json
+plugins/install-counts-cache.json
+plugins/known_marketplaces.json
+plugins/data/
+plugins/marketplaces/
+
+# 보안 민감 설정 (API 키·토큰 포함 가능)
+settings.json
+.superclaude-metadata.json
+
+# 아카이브·백업
+_archive/
+backups/
+
+# OS
+.DS_Store
+Thumbs.db

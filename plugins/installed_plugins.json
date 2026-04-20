@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "plugins": {
+    "compound-engineering@compound-engineering-plugin": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/compound-engineering-plugin/compound-engineering/2.62.1",
+        "version": "2.62.1",
+        "installedAt": "2026-04-06T12:49:34.836Z",
+        "lastUpdated": "2026-04-06T12:49:34.836Z",
+        "gitCommitSha": "320a04524142830a40a44bd72c4bf5d30931221c"
+      }
+    ],
+    "superpowers@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7",
+        "version": "5.0.7",
+        "installedAt": "2026-04-15T12:16:49.430Z",
+        "lastUpdated": "2026-04-15T12:16:49.430Z",
+        "gitCommitSha": "f9b088f7b3a6fe9d9a9a98e392ad13c9d47053a4"
+      }
+    ],
+    "context7@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/context7/unknown",
+        "version": "unknown",
+        "installedAt": "2026-04-15T12:17:00.226Z",
+        "lastUpdated": "2026-04-15T12:17:00.226Z"
+      }
+    ],
+    "frontend-design@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/frontend-design/unknown",
+        "version": "unknown",
+        "installedAt": "2026-04-15T12:17:12.977Z",
+        "lastUpdated": "2026-04-15T12:17:12.977Z"
+      }
+    ],
+    "skill-creator@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/skill-creator/unknown",
+        "version": "unknown",
+        "installedAt": "2026-04-15T12:17:27.018Z",
+        "lastUpdated": "2026-04-15T12:17:27.018Z"
+      }
+    ],
+    "code-review@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/code-review/unknown",
+        "version": "unknown",
+        "installedAt": "2026-04-15T12:17:55.798Z",
+        "lastUpdated": "2026-04-15T12:17:55.798Z"
+      }
+    ]
+  }
+}
