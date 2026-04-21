@@ -24,7 +24,7 @@
 | orchestrate, 멀티툴, 병렬, 도구 최적화, `--orchestrate` | `modes/orchestration.md` | 도구 선택 매트릭스, 리소스 관리 |
 | task-manage, 복잡한 작업, 3+ 단계, `--task-manage`, `--delegate` | `modes/task-management.md` | 계층적 작업 관리 + 메모리 |
 | uc, ultracompressed, 토큰 절감, 심볼, `--uc` | `modes/token-efficiency.md` | 심볼 기반 압축 커뮤니케이션 |
-| ux-write, 문구, 라이팅, 카피, copy, 어색, 텍스트 교정, 말이 이상, UX writing, `/ux-write`, `/ux-wash` | `modes/ux-writing.md` | **진입 즉시 `~/.claude/prompts/ux-writer-v6.1.md` Read 필수** — content_type 매트릭스·번역투 사전·규칙 우선순위 적용 |
+| **라이팅**, 문구, 카피, copy, ux-write, 어색, 텍스트 교정, 말이 이상, UX writing, `/ux-write`, `/ux-wash` | `modes/ux-writing.md` | **🔴 트리거 키워드 1개라도 매칭 시 즉시 `Read(~/.claude/prompts/ux-writer.md)` 강제 실행 (ver 1.0 SSOT). 이 Read 없이 어떤 문구도 진단·제안·수정 금지.** content_type 매트릭스·번역투 사전 14쌍·전환 레버 4종·brand_voice·Self-Critique 6단계·규칙 우선순위 전체 적용 |
 
 ## Notes
 

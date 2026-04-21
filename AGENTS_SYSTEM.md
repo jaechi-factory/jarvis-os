@@ -169,12 +169,33 @@ L3 1명만 1회 호출하는 단순 작업은 압축 형식 허용:
 | 런칭, 홍보, 마케팅, SEO, 바이럴, 획득, 유지, 리텐션, 그로스, launch, growth | growth-director |
 | 복잡한, 여러 단계, 여러 도메인, 계획, 로드맵, 분해, 순서, 자동 개선, 루프, plan, orchestrate | pm-director |
 
+### PM Skills 커맨드 자동 매칭 (2026-04-21 편입)
+
+L2 디렉터 라우팅과 **병행** 실행. CEO가 `/슬래시 커맨드`를 외우지 않아도 L1이 키워드로 자동 연결. 상세: `memory/global/reference_pm_skills_integration.md`.
+
+| 한국어 트리거 | 자동 호출 커맨드 | 병행 디렉터 | 용도 한 줄 |
+|---|---|---|---|
+| 새 아이디어, 신규 기획, 뭐 만들까, 초기 탐색, discovery | `/discover` | product-director | 아이디어→가설→실험 4단 원샷 |
+| PRD, 기획서, 스펙 작성, 요구사항 정리 | `/write-prd` | pm-director | 8섹션 PRD 템플릿 |
+| 북극성, NSM, 핵심 지표 정의 | `/north-star` | growth-director | North Star + 입력 지표 설계 |
+| 기능 우선순위, 백로그 정리, 뭐부터 할까 | `prioritize-features` skill | pm-director | Impact × Effort × Risk 매트릭스 |
+| 이슈 분류, 요청 트리아지, 고객 요청 정리 | `/triage-requests` | pm-director | 피드백 배치 분류·우선화 |
+| 사전 부검, 런칭 전 리스크, 망할 시나리오 | `/pre-mortem` | qa-director | Tigers/Paper Tigers/Elephants 리스크 분류 |
+| 이해관계자, 승인 루트, 설득 지도 | `/stakeholder-map` | pm-director | Power × Interest 그리드 |
+| 유저 스토리, 백로그 아이템, 스토리 분할 | `/write-stories` | engineering-director | user/job/wwa 3가지 포맷 |
+| A/B 테스트 해석, 실험 결과 판단 | `/analyze-test` | product-director | 통계 유의성·샘플·Ship/Stop 결정 |
+| 코호트, 리텐션 분석, 잔존율 | `/analyze-cohorts` | product-director | 가입 시점별 리텐션 커브 |
+| 배틀카드, 세일즈 대응, 경쟁사 반박 | `/battlecard` | growth-director | 반론·전환 전략 세일즈 카드 |
+
+**나머지 55개 PM Skills**: `SKILL.md`의 description 기반 자동 로드에 맡김. 필요 시 CEO가 `/플러그인명:스킬명` 직접 호출.
+
 ### 매칭 규칙
 
 - **0개 매칭**: L1 직접 처리 가능 (단순 질문·확인·조회 등)
 - **1개 매칭**: 해당 디렉터 단독 호출
 - **2개 이상 매칭**: 가능하면 pm-director가 총괄 조율, 아니면 L1이 순차/병렬 호출
 - **명시 override**: 사용자가 "CTO한테 시켜" / "ui-designer 직접 불러" 등 명시하면 그대로 따름
+- **PM Skills 트리거 매칭 시**: 위 표의 커맨드를 먼저 실행, 결과를 병행 디렉터 L3와 비교/종합 후 CEO 보고
 
 ### 예외 — L1 직접 처리 허용 (위임 불필요, 5블록 면제)
 

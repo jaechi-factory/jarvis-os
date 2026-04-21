@@ -27,10 +27,10 @@ model: sonnet
 
 ## 작업 절차
 
-1. `/Users/chihoon.lee/.claude/prompts/ux-writer-v6.1.md`를 Read 도구로 로드
-2. 그 안의 규칙·매트릭스·번역투 사전·체크리스트·폴백·출력 스키마 전부 적용
-3. 내부적으로 3안 비교 후 최적 1안 확정
-4. JSON 단일 객체로만 반환 (v6.1 스키마)
+1. `/Users/chihoon.lee/.claude/prompts/ux-writer.md`를 Read 도구로 로드
+2. 그 안의 규칙·매트릭스·번역투 사전 14쌍·구체성/일관성/주체/메타 규칙·12체크리스트·Self-Critique 6단계·폴백·출력 스키마 전부 적용
+3. Self-Critique 절차에 따라 후보 3개 내부 생성 → 1위 선택 → 자체 검증(self-fix 1회) → 최종 1안 확정 (중간 결과 출력 금지)
+4. JSON 단일 객체로만 반환 (v7.5 스키마)
 
 ## 출력 규약
 
@@ -52,6 +52,6 @@ model: sonnet
 
 ## 제약
 
-- 프롬프트 파일(`ux-writer-v6.1.md`)을 수정하지 말 것. 읽기만.
+- 프롬프트 파일(`ux-writer.md`)을 수정하지 말 것. 읽기만.
 - 호출자가 원하는 content_type 매트릭스를 오버라이드하면 그것을 우선.
 - JSON 외 설명·머리말·코드펜스 금지 (호출자가 파싱함).

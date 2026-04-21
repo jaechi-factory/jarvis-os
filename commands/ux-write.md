@@ -49,6 +49,6 @@ description: 한국어 UI 문구를 즉석에서 개선. 버튼/토스트/에러
 
 ## 제약
 
-- 프롬프트 원본(`~/.claude/prompts/ux-writer-v6.1.md`)은 절대 수정하지 말 것
+- 프롬프트 원본(`~/.claude/prompts/ux-writer.md`)은 절대 수정하지 말 것
 - JSON 원본도 사용자에게 보이지 말 것 (사용자는 친숙한 형식만 봄)
 - 원본 JSON을 보고 싶다고 명시하면 그때만 raw JSON도 같이 출력

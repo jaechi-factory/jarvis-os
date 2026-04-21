@@ -24,37 +24,126 @@
     "context7@claude-plugins-official": [
       {
         "scope": "user",
-        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/context7/unknown",
-        "version": "unknown",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/context7/a9810c234b82",
+        "version": "a9810c234b82",
         "installedAt": "2026-04-15T12:17:00.226Z",
-        "lastUpdated": "2026-04-15T12:17:00.226Z"
+        "lastUpdated": "2026-04-21T14:03:40.456Z"
       }
     ],
     "frontend-design@claude-plugins-official": [
       {
         "scope": "user",
-        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/frontend-design/unknown",
-        "version": "unknown",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/frontend-design/a9810c234b82",
+        "version": "a9810c234b82",
         "installedAt": "2026-04-15T12:17:12.977Z",
-        "lastUpdated": "2026-04-15T12:17:12.977Z"
+        "lastUpdated": "2026-04-21T14:03:40.465Z"
       }
     ],
     "skill-creator@claude-plugins-official": [
       {
         "scope": "user",
-        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/skill-creator/unknown",
-        "version": "unknown",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/skill-creator/a9810c234b82",
+        "version": "a9810c234b82",
         "installedAt": "2026-04-15T12:17:27.018Z",
-        "lastUpdated": "2026-04-15T12:17:27.018Z"
+        "lastUpdated": "2026-04-21T14:03:40.475Z"
       }
     ],
     "code-review@claude-plugins-official": [
       {
         "scope": "user",
-        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/code-review/unknown",
-        "version": "unknown",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/code-review/a9810c234b82",
+        "version": "a9810c234b82",
         "installedAt": "2026-04-15T12:17:55.798Z",
-        "lastUpdated": "2026-04-15T12:17:55.798Z"
+        "lastUpdated": "2026-04-21T14:03:40.461Z"
+      }
+    ],
+    "claude-mem@thedotmack": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/marketplaces/thedotmack/plugin",
+        "version": "11.0.1",
+        "installedAt": "2026-04-20T21:08:00.000Z",
+        "lastUpdated": "2026-04-20T21:08:00.000Z"
+      }
+    ],
+    "pm-toolkit@pm-skills": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/pm-skills/pm-toolkit/1.0.1",
+        "version": "1.0.1",
+        "installedAt": "2026-04-21T11:26:18.936Z",
+        "lastUpdated": "2026-04-21T11:26:18.936Z",
+        "gitCommitSha": "36ccefdc6c2e00d7c0c12cb0a52bf93e8ec50da4"
+      }
+    ],
+    "pm-product-strategy@pm-skills": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/pm-skills/pm-product-strategy/1.0.1",
+        "version": "1.0.1",
+        "installedAt": "2026-04-21T11:26:20.197Z",
+        "lastUpdated": "2026-04-21T11:26:20.197Z",
+        "gitCommitSha": "36ccefdc6c2e00d7c0c12cb0a52bf93e8ec50da4"
+      }
+    ],
+    "pm-product-discovery@pm-skills": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/pm-skills/pm-product-discovery/1.0.1",
+        "version": "1.0.1",
+        "installedAt": "2026-04-21T11:26:21.344Z",
+        "lastUpdated": "2026-04-21T11:26:21.344Z",
+        "gitCommitSha": "36ccefdc6c2e00d7c0c12cb0a52bf93e8ec50da4"
+      }
+    ],
+    "pm-market-research@pm-skills": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/pm-skills/pm-market-research/1.0.1",
+        "version": "1.0.1",
+        "installedAt": "2026-04-21T11:26:22.520Z",
+        "lastUpdated": "2026-04-21T11:26:22.520Z",
+        "gitCommitSha": "36ccefdc6c2e00d7c0c12cb0a52bf93e8ec50da4"
+      }
+    ],
+    "pm-data-analytics@pm-skills": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/pm-skills/pm-data-analytics/1.0.1",
+        "version": "1.0.1",
+        "installedAt": "2026-04-21T11:26:23.690Z",
+        "lastUpdated": "2026-04-21T11:26:23.690Z",
+        "gitCommitSha": "36ccefdc6c2e00d7c0c12cb0a52bf93e8ec50da4"
+      }
+    ],
+    "pm-marketing-growth@pm-skills": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/pm-skills/pm-marketing-growth/1.0.1",
+        "version": "1.0.1",
+        "installedAt": "2026-04-21T11:26:24.837Z",
+        "lastUpdated": "2026-04-21T11:26:24.837Z",
+        "gitCommitSha": "36ccefdc6c2e00d7c0c12cb0a52bf93e8ec50da4"
+      }
+    ],
+    "pm-go-to-market@pm-skills": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/pm-skills/pm-go-to-market/1.0.1",
+        "version": "1.0.1",
+        "installedAt": "2026-04-21T11:26:25.968Z",
+        "lastUpdated": "2026-04-21T11:26:25.968Z",
+        "gitCommitSha": "36ccefdc6c2e00d7c0c12cb0a52bf93e8ec50da4"
+      }
+    ],
+    "pm-execution@pm-skills": [
+      {
+        "scope": "user",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/pm-skills/pm-execution/1.0.1",
+        "version": "1.0.1",
+        "installedAt": "2026-04-21T11:26:27.149Z",
+        "lastUpdated": "2026-04-21T11:26:27.149Z",
+        "gitCommitSha": "36ccefdc6c2e00d7c0c12cb0a52bf93e8ec50da4"
       }
     ]
   }
