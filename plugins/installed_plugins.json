@@ -24,37 +24,37 @@
     "context7@claude-plugins-official": [
       {
         "scope": "user",
-        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/context7/158aeaa16b4a",
-        "version": "158aeaa16b4a",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/context7/c1880b426972",
+        "version": "c1880b426972",
         "installedAt": "2026-04-15T12:17:00.226Z",
-        "lastUpdated": "2026-04-21T14:11:09.186Z"
+        "lastUpdated": "2026-04-24T00:47:16.342Z"
       }
     ],
     "frontend-design@claude-plugins-official": [
       {
         "scope": "user",
-        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/frontend-design/158aeaa16b4a",
-        "version": "158aeaa16b4a",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/frontend-design/c1880b426972",
+        "version": "c1880b426972",
         "installedAt": "2026-04-15T12:17:12.977Z",
-        "lastUpdated": "2026-04-21T14:11:09.193Z"
+        "lastUpdated": "2026-04-24T00:47:16.357Z"
       }
     ],
     "skill-creator@claude-plugins-official": [
       {
         "scope": "user",
-        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/skill-creator/158aeaa16b4a",
-        "version": "158aeaa16b4a",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/skill-creator/c1880b426972",
+        "version": "c1880b426972",
         "installedAt": "2026-04-15T12:17:27.018Z",
-        "lastUpdated": "2026-04-21T14:11:09.213Z"
+        "lastUpdated": "2026-04-24T00:47:16.368Z"
       }
     ],
     "code-review@claude-plugins-official": [
       {
         "scope": "user",
-        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/code-review/158aeaa16b4a",
-        "version": "158aeaa16b4a",
+        "installPath": "/Users/chihoon.lee/.claude/plugins/cache/claude-plugins-official/code-review/c1880b426972",
+        "version": "c1880b426972",
         "installedAt": "2026-04-15T12:17:55.798Z",
-        "lastUpdated": "2026-04-21T14:11:09.198Z"
+        "lastUpdated": "2026-04-24T00:47:16.353Z"
       }
     ],
     "claude-mem@thedotmack": [
