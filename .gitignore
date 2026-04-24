@@ -46,3 +46,6 @@ Thumbs.db
 
 # Runtime state
 state/
+
+# Runtime plugin state (auto-updated per session)
+plugins/installed_plugins.json
