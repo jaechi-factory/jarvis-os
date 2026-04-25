@@ -155,7 +155,7 @@ if [ -f "$MEM_MARKER" ]; then
 import os
 home = os.path.expanduser('~')
 marker = '$MEM_MARKER'
-mem_index = f'{home}/.claude/projects/-Users-chihoon-lee/memory/MEMORY.md'
+mem_index = f'{home}/.claude/projects/{home.replace(chr(47), chr(45))}/memory/MEMORY.md'
 try:
     with open(marker) as f:
         paths = [p.strip() for p in f.readlines() if p.strip()]

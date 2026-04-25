@@ -90,7 +90,7 @@ if tool in ('Write', 'Edit', 'MultiEdit'):
     if path in rule_paths or path.startswith(f'{home}/.claude/modes/') or \
        path.startswith(f'{home}/.claude/rules/common/'):
         is_rule = True
-    if path.startswith(f'{home}/.claude/projects/-Users-chihoon-lee/memory/'):
+    if path.startswith(f'{home}/.claude/projects/{home.replace(chr(47), chr(45))}/memory/'):
         is_memory = True
         # Memory is also a "rule-like" change → trigger /check-rules too
         is_rule = True

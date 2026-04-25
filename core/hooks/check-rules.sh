@@ -11,7 +11,12 @@
 # Usage: bash ~/.claude/hooks/check-rules.sh
 # 슬래시 명령: /check-rules
 
-cd /Users/chihoon.lee/.claude
+cd "$HOME/.claude"
+
+# Dynamic slug from HOME path (e.g. /Users/john → -Users-john)
+SLUG="${HOME//\//-}"
+MEM_GLOBAL="$HOME/.claude/projects/$SLUG/memory/global"
+MEM_INDEX="$HOME/.claude/projects/$SLUG/memory/MEMORY.md"
 
 # Build target file list
 find . -maxdepth 5 \( \
@@ -22,8 +27,8 @@ find . -maxdepth 5 \( \
   -path './FLAGS.md' -o \
   -path './modes/*.md' -o \
   -path './rules/common/*.md' -o \
-  -path './projects/-Users-chihoon-lee/memory/MEMORY.md' -o \
-  -path './projects/-Users-chihoon-lee/memory/global/*.md' \
+  -path "./projects/$SLUG/memory/MEMORY.md" -o \
+  -path "./projects/$SLUG/memory/global/*.md" \
 \) -type f > /tmp/rule-check-files.txt
 
 TOTAL=$(wc -l < /tmp/rule-check-files.txt | tr -d ' ')
@@ -51,7 +56,7 @@ echo ""
 # ── 1. L1 호칭: COO 잔존 ──
 COO_HITS=$(xargs grep -Hn "COO" < /tmp/rule-check-files.txt 2>/dev/null \
   | grep -v "변경 이력\|혼재되어\|→ CEO\|2026-04-25 4차\|COO/CEO 혼재" | wc -l | tr -d ' ')
-if [ "$COO_HITS" -eq 0 ]; then
+if [ "${COO_HITS:-0}" -eq 0 ]; then
   print_check PASS "역할 모델 호칭" "COO 잔존 0건 (CEO=자비스 통일)"
 else
   print_check FAIL "역할 모델 호칭" "COO 잔존 $COO_HITS건"
@@ -77,9 +82,9 @@ else
 fi
 
 # ── 4. 카탈로그 버전 정합성 ──
-CATALOG_FRONT=$(grep -E "^name:" ~/.claude/projects/-Users-chihoon-lee/memory/global/reference_tool_catalog.md | grep -oE "v[0-9]+\.[0-9]+" | head -1)
-CATALOG_BODY=$(grep -E "^# 도구 박스" ~/.claude/projects/-Users-chihoon-lee/memory/global/reference_tool_catalog.md | grep -oE "v[0-9]+\.[0-9]+" | head -1)
-MEM_CITE=$(grep "도구 박스 카탈로그" ~/.claude/projects/-Users-chihoon-lee/memory/MEMORY.md | grep -oE "v[0-9]+\.[0-9]+" | head -1)
+CATALOG_FRONT=$(grep -E "^name:" "$MEM_GLOBAL/reference_tool_catalog.md" | grep -oE "v[0-9]+\.[0-9]+" | head -1)
+CATALOG_BODY=$(grep -E "^# 도구 박스" "$MEM_GLOBAL/reference_tool_catalog.md" | grep -oE "v[0-9]+\.[0-9]+" | head -1)
+MEM_CITE=$(grep "도구 박스 카탈로그" "$MEM_INDEX" | grep -oE "v[0-9]+\.[0-9]+" | head -1)
 if [ "$CATALOG_FRONT" = "$CATALOG_BODY" ] && [ "$CATALOG_FRONT" = "$MEM_CITE" ]; then
   print_check PASS "카탈로그 버전" "$CATALOG_FRONT 통일 (frontmatter=본문=MEMORY)"
 else
@@ -98,7 +103,7 @@ for f in $(cat /tmp/rule-check-files.txt); do
 done
 DEF_COUNT=$(echo "$DEFINITION_FILES" | tr ' ' '\n' | grep -v "^$" | wc -l | tr -d ' ')
 NON_SSOT_DEF=$(echo "$DEFINITION_FILES" | tr ' ' '\n' | grep -v "AGENTS_SYSTEM.md\|AGENTS_REFERENCE.md" | grep -v "^$" | wc -l | tr -d ' ')
-if [ "$NON_SSOT_DEF" -eq 0 ]; then
+if [ "${NON_SSOT_DEF:-0}" -eq 0 ]; then
   print_check PASS "5블록 SSOT" "AGENTS_SYSTEM/REFERENCE 외에 정의 0건 (정의=포맷+🧭 패턴)"
 else
   print_check FAIL "5블록 SSOT" "비-SSOT 파일에 5블록 정의 발견 ($NON_SSOT_DEF건)"
@@ -107,9 +112,9 @@ fi
 
 # ── 6. ABSOLUTE 블록 정의 위치 (v2: 헤더 정의 vs 메타 인용 구분) ──
 # 정의 = '## 🔴 ABSOLUTE' 헤더로 시작하는 섹션 (CLAUDE.md만 가져야)
-ABSOLUTE_HDR=$(grep -lE "^## 🔴 ABSOLUTE" ~/.claude/CLAUDE.md ~/.claude/RULES.md ~/.claude/AGENTS_SYSTEM.md ~/.claude/AGENTS_REFERENCE.md ~/.claude/projects/-Users-chihoon-lee/memory/global/*.md 2>/dev/null | wc -l | tr -d ' ')
-ABSOLUTE_NON_CLAUDE=$(grep -lE "^## 🔴 ABSOLUTE" ~/.claude/RULES.md ~/.claude/AGENTS_SYSTEM.md ~/.claude/AGENTS_REFERENCE.md ~/.claude/projects/-Users-chihoon-lee/memory/global/*.md 2>/dev/null | wc -l | tr -d ' ')
-if [ "$ABSOLUTE_NON_CLAUDE" -eq 0 ]; then
+ABSOLUTE_HDR=$(grep -lE "^## 🔴 ABSOLUTE" ~/.claude/CLAUDE.md ~/.claude/RULES.md ~/.claude/AGENTS_SYSTEM.md ~/.claude/AGENTS_REFERENCE.md "$MEM_GLOBAL"/*.md 2>/dev/null | wc -l | tr -d ' ')
+ABSOLUTE_NON_CLAUDE=$(grep -lE "^## 🔴 ABSOLUTE" ~/.claude/RULES.md ~/.claude/AGENTS_SYSTEM.md ~/.claude/AGENTS_REFERENCE.md "$MEM_GLOBAL"/*.md 2>/dev/null | wc -l | tr -d ' ')
+if [ "${ABSOLUTE_NON_CLAUDE:-0}" -eq 0 ]; then
   print_check PASS "ABSOLUTE 위치" "CLAUDE.md 단독 정의 ($ABSOLUTE_HDR개 헤더, 메모리 인용 제외)"
 else
   print_check FAIL "ABSOLUTE 위치" "CLAUDE.md 외 정의 발견 ($ABSOLUTE_NON_CLAUDE건)"
@@ -149,13 +154,13 @@ fi
 # ── 9. MEMORY.md 1줄 룰 (200자) ──
 LINE_VIOL=$(python3 -c "
 cnt = 0
-with open('$HOME/.claude/projects/-Users-chihoon-lee/memory/MEMORY.md') as f:
+with open(os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-'), 'memory', 'MEMORY.md')) as f:
     for line in f:
         if line.startswith('- ') and len(line) > 200:
             cnt += 1
 print(cnt)
 " 2>/dev/null)
-if [ "$LINE_VIOL" -eq 0 ]; then
+if [ "${LINE_VIOL:-0}" -eq 0 ]; then
   print_check PASS "MEMORY 1줄 룰" "위반 0건 (200자 컷)"
 else
   print_check WARN "MEMORY 1줄 룰" "$LINE_VIOL건 위반 (200자 초과)"
@@ -163,7 +168,7 @@ fi
 
 # ── 10. 자비스 호칭 등록 ──
 JARVIS_FILES=$(xargs grep -l "자비스" < /tmp/rule-check-files.txt 2>/dev/null | wc -l | tr -d ' ')
-if [ "$JARVIS_FILES" -ge 4 ]; then
+if [ "${JARVIS_FILES:-0}" -ge 4 ]; then
   print_check PASS "자비스 호칭" "$JARVIS_FILES 파일 등록"
 else
   print_check WARN "자비스 호칭" "$JARVIS_FILES 파일만 등록 (최소 4 권장)"
@@ -172,7 +177,7 @@ fi
 # ── 11. rules/common/* 자동로드 파일 정합성 (v2 신규) ──
 COMMON_FILES=$(ls ~/.claude/rules/common/*.md 2>/dev/null | wc -l | tr -d ' ')
 COMMON_LARGE=$(find ~/.claude/rules/common -name "*.md" -size +5k 2>/dev/null | wc -l | tr -d ' ')
-if [ "$COMMON_FILES" -ge 7 ] && [ "$COMMON_LARGE" -eq 0 ]; then
+if [ "${COMMON_FILES:-0}" -ge 7 ] && [ "${COMMON_LARGE:-0}" -eq 0 ]; then
   print_check PASS "rules/common 분산" "$COMMON_FILES 파일 모두 5KB 이하 (잘 분산)"
 else
   print_check WARN "rules/common 분산" "$COMMON_FILES 파일, 5KB 초과 $COMMON_LARGE개 (재분산 검토)"
@@ -186,8 +191,8 @@ import re, collections
 files = [
   '$HOME/.claude/AGENTS_SYSTEM.md',
   '$HOME/.claude/AGENTS_REFERENCE.md',
-  '$HOME/.claude/projects/-Users-chihoon-lee/memory/MEMORY.md',
-  '$HOME/.claude/projects/-Users-chihoon-lee/memory/global/reference_official_tools_integration.md',
+  '$HOME/.claude/projects/' + os.environ['HOME'].replace('/', '-') + '/memory/MEMORY.md',
+  os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-'), 'memory', 'global', 'reference_official_tools_integration.md'),
 ]
 keywords = collections.Counter()
 key_pat = re.compile(r'(?:^|[\s,/|])([가-힣a-z]{2,12})(?=[\s,/|]|$)')
@@ -216,7 +221,7 @@ for k, v in sorted(overlap, key=lambda x: -x[1])[:5]:
     print(f'  {k}: {v}회')
 " 2>/dev/null)
 TRIG_COUNT=$(echo "$TRIGGER_OVERLAP" | head -1)
-if [ "$TRIG_COUNT" -le 5 ]; then
+if [ "${TRIG_COUNT:-0}" -le 5 ]; then
   print_check PASS "트리거 키워드 누적" "3+회 등장 키워드 $TRIG_COUNT개 (수용 범위)"
 else
   print_check WARN "트리거 키워드 누적" "3+회 등장 키워드 $TRIG_COUNT개 (충돌 위험)"
@@ -227,9 +232,9 @@ fi
 FM_MISSING=$(python3 -c "
 import os
 cnt = 0
-for f in os.listdir('$HOME/.claude/projects/-Users-chihoon-lee/memory/global'):
+for f in os.listdir(os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-'), 'memory', 'global')):
     if not f.endswith('.md'): continue
-    path = f'$HOME/.claude/projects/-Users-chihoon-lee/memory/global/{f}'
+    path = os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-'), 'memory', 'global', f)
     try:
         with open(path) as fp:
             head = fp.read(500)
@@ -238,7 +243,7 @@ for f in os.listdir('$HOME/.claude/projects/-Users-chihoon-lee/memory/global'):
     except: pass
 print(cnt)
 " 2>/dev/null)
-if [ "$FM_MISSING" -eq 0 ]; then
+if [ "${FM_MISSING:-0}" -eq 0 ]; then
   print_check PASS "global frontmatter" "36 파일 모두 frontmatter 보유"
 else
   print_check WARN "global frontmatter" "$FM_MISSING개 파일 frontmatter 누락"
@@ -258,9 +263,9 @@ scan_paths = [
     home + '/.claude/FLAGS.md',
 ]
 for d in [home + '/.claude/modes', home + '/.claude/rules/common',
-          home + '/.claude/projects/-Users-chihoon-lee/memory',
-          home + '/.claude/projects/-Users-chihoon-lee/memory/global',
-          home + '/.claude/projects/-Users-chihoon-lee/memory/projects']:
+          os.path.join(home, '.claude', 'projects', home.replace('/', '-'), 'memory'),
+          os.path.join(home, '.claude', 'projects', home.replace('/', '-'), 'memory'),
+          os.path.join(home, '.claude', 'projects', home.replace('/', '-'), 'memory')]:
     if os.path.isdir(d):
         for f in os.listdir(d):
             if f.endswith('.md'):
@@ -285,7 +290,7 @@ for p, i, r in broken[:5]:
     print(f'  {p}:{i} → {r}')
 " 2>/dev/null)
 BROKEN_COUNT=$(echo "$BROKEN_REFS" | head -1)
-if [ "$BROKEN_COUNT" -eq 0 ]; then
+if [ "${BROKEN_COUNT:-0}" -eq 0 ]; then
   print_check PASS "SSOT 참조 정합성" "깨진 \`~/.claude/*.md\` 참조 0건"
 else
   print_check WARN "SSOT 참조 정합성" "깨진 참조 $BROKEN_COUNT건"
@@ -295,9 +300,9 @@ fi
 # ── 15. global/projects 고아 파일 검사 (인덱스 누락) v2 신규 ──
 ORPHAN_REPORT=$(python3 -c "
 import os
-gdir = '$HOME/.claude/projects/-Users-chihoon-lee/memory/global'
-pdir = '$HOME/.claude/projects/-Users-chihoon-lee/memory/projects'
-mem = open('$HOME/.claude/projects/-Users-chihoon-lee/memory/MEMORY.md').read()
+gdir = os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-'), 'memory', 'global')
+pdir = os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-'), 'memory', 'projects')
+mem = open('$HOME/.claude/projects/' + os.environ['HOME'].replace('/', '-') + '/memory/MEMORY.md').read()
 g_orphan = [f for f in os.listdir(gdir) if f.endswith('.md') and f not in mem]
 p_orphan = [f for f in os.listdir(pdir) if f.endswith('.md') and f not in mem]
 total = len(g_orphan) + len(p_orphan)
@@ -306,7 +311,7 @@ for f in g_orphan: print(f'  global/{f}')
 for f in p_orphan: print(f'  projects/{f}')
 " 2>/dev/null)
 ORPHAN_COUNT=$(echo "$ORPHAN_REPORT" | head -1)
-if [ "$ORPHAN_COUNT" -eq 0 ]; then
+if [ "${ORPHAN_COUNT:-0}" -eq 0 ]; then
   print_check PASS "메모리 인덱스 등재" "고아 파일 0건 (모든 메모리 MEMORY.md에 인덱싱)"
 else
   print_check WARN "메모리 인덱스 등재" "고아 파일 $ORPHAN_COUNT건"
@@ -330,7 +335,7 @@ else
 fi
 
 # ── 자동 로드 사이즈 ──
-AUTO_SIZE=$(cat ~/.claude/CLAUDE.md ~/.claude/RULES.md ~/.claude/FLAGS.md ~/.claude/AGENTS_SYSTEM.md ~/.claude/modes/_index.md ~/.claude/rules/common/*.md ~/.claude/projects/-Users-chihoon-lee/memory/MEMORY.md 2>/dev/null | wc -c | tr -d ' ')
+AUTO_SIZE=$(cat ~/.claude/CLAUDE.md ~/.claude/RULES.md ~/.claude/FLAGS.md ~/.claude/AGENTS_SYSTEM.md ~/.claude/modes/_index.md ~/.claude/rules/common/*.md "$MEM_INDEX" 2>/dev/null | wc -c | tr -d ' ')
 
 echo ""
 echo "═══════════════════════════════════════════════════════"
@@ -339,4 +344,4 @@ echo " 자동 로드 사이즈: $AUTO_SIZE B (목표 < 50000)"
 echo "═══════════════════════════════════════════════════════"
 
 rm -f /tmp/rule-check-files.txt
-[ "$FAIL" -eq 0 ] && exit 0 || exit 1
+[ "${FAIL:-0}" -eq 0 ] && exit 0 || exit 1

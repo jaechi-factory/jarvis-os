@@ -10,7 +10,7 @@
 
 ## 1. L3 — Leader (직군 리더 · 핵심 23개 + 플러그인 번들 9개 = 32개)
 
-> **v2.0 갱신 노트 (2026-04-25)**: 5단 조직도 적용 — L3 = Leader 32개(직군 리더, 자율 판단·실행), L4 = Worker 218개 스킬(직군 실무자). 본 섹션은 핵심 23개 에이전트만 표로 명시. 플러그인 번들 추가 9개(compound-engineering 등) + L4 Worker 전수 분류는 별도 SSOT 참조: `~/.claude/projects/-Users-chihoon-lee/memory/global/reference_tool_catalog.md` (총 263개 도구 전수 분류).
+> **v2.0 갱신 노트 (2026-04-25)**: 5단 조직도 적용 — L3 = Leader 32개(직군 리더, 자율 판단·실행), L4 = Worker 218개 스킬(직군 실무자). 본 섹션은 핵심 23개 에이전트만 표로 명시. 플러그인 번들 추가 9개(compound-engineering 등) + L4 Worker 전수 분류는 별도 SSOT 참조: `~/.claude/projects/<slug>/memory/global/reference_tool_catalog.md` (총 263개 도구 전수 분류).
 
 ### 핵심 개발 (매일 사용)
 | 에이전트 | 역할 | 소속 C-Level | 언제 호출 |

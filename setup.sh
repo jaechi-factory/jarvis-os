@@ -130,6 +130,11 @@ mkdir -p "$CLAUDE_DIR/commands"
 cp "$SCRIPT_DIR"/core/commands/*.md "$CLAUDE_DIR/commands/"
 ok "  commands/ $(ls "$CLAUDE_DIR"/commands/ | wc -l | tr -d ' ') 파일"
 
+# agents 38 (L3 Leader 본체 — 5단 조직 작동에 필수)
+mkdir -p "$CLAUDE_DIR/agents"
+cp "$SCRIPT_DIR"/core/agents/*.md "$CLAUDE_DIR/agents/"
+ok "  agents/ $(ls "$CLAUDE_DIR"/agents/ | wc -l | tr -d ' ') 파일 (L3 Leader)"
+
 # prompts 1
 mkdir -p "$CLAUDE_DIR/prompts"
 cp "$SCRIPT_DIR"/core/prompts/*.md "$CLAUDE_DIR/prompts/"
@@ -147,17 +152,24 @@ MEM_DIR="$CLAUDE_DIR/projects/$SLUG/memory"
 mkdir -p "$MEM_DIR/global" "$MEM_DIR/projects"
 ok "  메모리 디렉토리: $MEM_DIR"
 
-# global/ 38 파일 (개인 정보 제거된 ABSOLUTE/룰)
+# global/ ABSOLUTE/룰 파일 (개인 정보 제거됨)
 cp "$SCRIPT_DIR"/memory-templates/global/*.md "$MEM_DIR/global/"
-ok "  global/ $(ls "$MEM_DIR"/global/ | wc -l | tr -d ' ') 파일 복사"
+# .template 확장자 파일도 복사 (user_profile.md.template 등)
+cp "$SCRIPT_DIR"/memory-templates/global/*.md.template "$MEM_DIR/global/" 2>/dev/null || true
+ok "  global/ $(ls "$MEM_DIR"/global/*.md 2>/dev/null | wc -l | tr -d ' ') 파일 복사"
 
 # user_profile.md.template → global/user_profile.md (사용자 작성용)
 if [[ ! -f "$MEM_DIR/global/user_profile.md" ]]; then
-  cp "$MEM_DIR/global/user_profile.md.template" "$MEM_DIR/global/user_profile.md"
-  rm -f "$MEM_DIR/global/user_profile.md.template"
-  ok "  user_profile.md 빈 템플릿 (사용자 직접 작성 필요)"
+  if [[ -f "$MEM_DIR/global/user_profile.md.template" ]]; then
+    cp "$MEM_DIR/global/user_profile.md.template" "$MEM_DIR/global/user_profile.md"
+    rm -f "$MEM_DIR/global/user_profile.md.template"
+    ok "  user_profile.md 빈 템플릿 (사용자 직접 작성 필요)"
+  else
+    warn "  user_profile.md.template 누락 (수동으로 작성 필요)"
+  fi
 else
   warn "  user_profile.md 이미 존재 — 보존"
+  rm -f "$MEM_DIR/global/user_profile.md.template" 2>/dev/null || true
 fi
 
 # MEMORY.md.template → MEMORY.md
