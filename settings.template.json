@@ -1,31 +1,117 @@
 {
-  "_comment": "Claude Code 환경 템플릿. 새 PC/계정에서 setup.sh 실행 후 이 파일을 settings.json에 병합하거나 기반으로 사용.",
-
-  "mcpServers": {
-    "context7": {
-      "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp"]
-    },
-    "sequential-thinking": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
-    }
-  },
-
   "permissions": {
     "allow": [
       "Bash(*)",
-      "Read(~/.claude/**)",
-      "Write(~/.claude/**)",
-      "Edit(~/.claude/**)",
-      "Read(/private/tmp/**)",
-      "Write(/private/tmp/**)",
-      "Edit(/private/tmp/**)"
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "MultiEdit(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "NotebookRead(*)",
+      "NotebookEdit(*)",
+      "TodoWrite(*)",
+      "Task(*)",
+      "LS(*)",
+      "mcp__*",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_run_code",
+      "mcp__playwright__browser_fill_form",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_type",
+      "mcp__playwright__browser_press_key",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_resize",
+      "mcp__vercel__get_project",
+      "mcp__vercel__search_vercel_documentation",
+      "mcp__playwright__browser_console_messages",
+      "mcp__github__get_file_contents",
+      "mcp__github__create_or_update_file",
+      "mcp__github__search_repositories",
+      "mcp__github__search_code",
+      "mcp__playwright__browser_navigate_back",
+      "mcp__github__list_commits",
+      "mcp__figma__get_metadata",
+      "mcp__figma__generate_figma_design",
+      "mcp__playwright__browser_close",
+      "mcp__figma__whoami",
+      "mcp__figma__get_screenshot",
+      "mcp__figma__get_design_context",
+      "mcp__figma__use_figma",
+      "Bash(npx vitest:*)",
+      "mcp__codex-cli__codex",
+      "Bash(mkdir -p ~/.claude/templates)",
+      "Bash(mv ~/.claude/system-template.md ~/.claude/templates/design-md.template.md)",
+      "mcp__figma__get_variable_defs",
+      "Bash(mkdir -p ~/.claude/prompts)",
+      "mcp__playwright__browser_network_requests",
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "mcp__playwright__browser_handle_dialog",
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "mcp__plugin_context7_context7__query-docs",
+      "mcp__plugin_claude-mem_mcp-search__search",
+      "mcp__plugin_claude-mem_mcp-search__get_observations",
+      "mcp__notion__notion-fetch",
+      "mcp__notion__notion-get-teams",
+      "mcp__notion__notion-search",
+      "mcp__notion__notion-create-pages",
+      "mcp__plugin_figma_figma__whoami"
     ],
-    "_comment_projects": "작업 프로젝트마다 아래 3줄 패턴으로 추가. 예: Read(/Users/{username}/{project}/**)"
+    "deny": [
+      "Bash(*curl*stripe.com*)",
+      "Bash(*curl*paypal.com*)",
+      "Bash(*curl*braintreepayments.com*)",
+      "Bash(*curl*api.iamport.kr*)",
+      "Bash(*curl*api.tosspayments.com*)",
+      "Bash(*curl*naverpay*)",
+      "Bash(*curl*kakaopay*)",
+      "Bash(*curl*payco*)",
+      "Bash(*wget*stripe.com*)",
+      "Bash(*wget*paypal.com*)",
+      "Bash(*security*find-generic-password*)",
+      "Bash(*security*unlock-keychain*)",
+      "Read(**/.ssh/**)",
+      "Write(**/.ssh/**)",
+      "Edit(**/.ssh/**)",
+      "Read(**/.aws/credentials)",
+      "Read(**/.env.production*)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~)",
+      "Bash(rm -rf ~/*)"
+    ],
+    "defaultMode": "acceptEdits",
+    "additionalDirectories": [
+      "/tmp",
+      "/private/tmp"
+    ]
   },
-
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'cmd=$(echo \"$CLAUDE_TOOL_INPUT\" | python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get(\\\"command\\\",\\\"\\\"))\" 2>/dev/null); if echo \"$cmd\" | grep -qE \"rm -rf ~|rm -rf /[^t]|rm -rf \\.\\.?\\/\\.\\.\"; then echo \"위험: 홈/루트 디렉토리 삭제 명령어가 감지됐습니다. 정말 실행할지 확인하세요.\"; exit 1; fi; exit 0'"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'path=$(echo \"$CLAUDE_TOOL_INPUT\" | python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get(\\\"file_path\\\",\\\"\\\"))\" 2>/dev/null); if echo \"$path\" | grep -qE \"\\.(ts|tsx|js|jsx|css|scss)$\"; then echo \"⛔ [Codex 위임 강제] 코드 파일 직접 수정 차단: $path — mcp__codex-cli__codex 사용. 예외: Codex 실패 복구 또는 사용자 명시 허가(직접 해).\"; exit 1; fi; exit 0'"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Bash",
@@ -33,6 +119,15 @@
           {
             "type": "command",
             "command": "bash -c '\ninput=$(cat)\ncmd=$(echo \"$input\" | python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get(\\\"tool_input\\\",{}).get(\\\"command\\\",\\\"\\\"))\" 2>/dev/null)\nexit_code=$(echo \"$input\" | python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get(\\\"tool_response\\\",{}).get(\\\"exit_code\\\",0))\" 2>/dev/null)\nstdout=$(echo \"$input\" | python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get(\\\"tool_response\\\",{}).get(\\\"stdout\\\",\\\"\\\"))\" 2>/dev/null)\nstderr=$(echo \"$input\" | python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get(\\\"tool_response\\\",{}).get(\\\"stderr\\\",\\\"\\\"))\" 2>/dev/null)\n\nif echo \"$cmd\" | grep -qiE \"tsc|typecheck|type-check|npm run build|pnpm run build|yarn build|npm run test|pnpm test|jest|vitest\"; then\n  result_file=\"/private/tmp/claude-build-result.txt\"\n  output=\"$stdout$stderr\"\n  line_count=$(echo \"$output\" | wc -l | tr -d \" \")\n  if [ \"$exit_code\" -ne 0 ] 2>/dev/null; then\n    status=\"FAIL\"\n  else\n    status=\"PASS\"\n  fi\n  echo \"CMD=$cmd\" > \"$result_file\"\n  echo \"STATUS=$status\" >> \"$result_file\"\n  echo \"LINES=$line_count\" >> \"$result_file\"\n  echo \"EXIT=$exit_code\" >> \"$result_file\"\n  if [ \"$line_count\" -gt 100 ] && [ \"$status\" = \"FAIL\" ]; then\n    echo \"SUMMARY=LOG_TRUNCATED\" >> \"$result_file\"\n    echo \"$output\" | tail -20 >> \"$result_file\"\n  else\n    echo \"$output\" >> \"$result_file\"\n  fi\nfi\nexit 0\n'"
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/audit-log.sh"
           }
         ]
       }
@@ -44,9 +139,75 @@
           {
             "type": "command",
             "command": "bash -c '\nresult_file=\"/private/tmp/claude-build-result.txt\"\nif [ -f \"$result_file\" ]; then\n  status=$(grep \"^STATUS=\" \"$result_file\" | cut -d= -f2)\n  cmd=$(grep \"^CMD=\" \"$result_file\" | cut -d= -f2- | head -c 80)\n  lines=$(grep \"^LINES=\" \"$result_file\" | cut -d= -f2)\n  exit_code=$(grep \"^EXIT=\" \"$result_file\" | cut -d= -f2)\n  summary=$(grep \"^SUMMARY=\" \"$result_file\" | cut -d= -f2)\n\n  echo \"\"\n  echo \"━━━ 빌드/테스트 결과 ━━━\"\n  if [ \"$status\" = \"PASS\" ]; then\n    echo \"✅ 통과: $cmd\"\n  else\n    echo \"❌ 실패: $cmd\"\n    echo \"⚠️  완료 선언 전 위 오류를 확인하세요.\"\n    if [ \"$summary\" = \"LOG_TRUNCATED\" ]; then\n      echo \"[로그 축약 — 전체 ${lines}줄 중 마지막 20줄만 표시]\"\n    fi\n  fi\n  echo \"━━━━━━━━━━━━━━━━━━━━━━\"\n\n  rm -f \"$result_file\"\nfi\nexit 0\n'"
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/audit-summary.sh"
           }
         ]
       }
     ]
-  }
+  },
+  "enabledPlugins": {
+    "compound-engineering@compound-engineering-plugin": true,
+    "superpowers@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "claude-mem@thedotmack": true,
+    "pm-toolkit@pm-skills": true,
+    "pm-product-strategy@pm-skills": true,
+    "pm-product-discovery@pm-skills": true,
+    "pm-market-research@pm-skills": true,
+    "pm-data-analytics@pm-skills": true,
+    "pm-marketing-growth@pm-skills": true,
+    "pm-go-to-market@pm-skills": true,
+    "pm-execution@pm-skills": true,
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true,
+    "frontend-design-audit@frontend-design-audit": true,
+    "design-research@designer-skills": true,
+    "design-systems@designer-skills": true,
+    "ux-strategy@designer-skills": true,
+    "ui-design@designer-skills": true,
+    "interaction-design@designer-skills": true,
+    "prototyping-testing@designer-skills": true,
+    "design-ops@designer-skills": true,
+    "designer-toolkit@designer-skills": true,
+    "figma@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "compound-engineering-plugin": {
+      "source": {
+        "source": "github",
+        "repo": "EveryInc/compound-engineering-plugin"
+      }
+    },
+    "pm-skills": {
+      "source": {
+        "source": "github",
+        "repo": "phuryn/pm-skills"
+      }
+    },
+    "ui-ux-pro-max-skill": {
+      "source": {
+        "source": "github",
+        "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
+      }
+    },
+    "frontend-design-audit": {
+      "source": {
+        "source": "github",
+        "repo": "mistyhx/frontend-design-audit"
+      }
+    },
+    "designer-skills": {
+      "source": {
+        "source": "github",
+        "repo": "Owl-Listener/designer-skills"
+      }
+    }
+  },
+  "alwaysThinkingEnabled": true,
+  "theme": "dark-daltonized"
 }

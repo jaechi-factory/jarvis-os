@@ -1,0 +1,70 @@
+# Memory Index
+
+`global/` = 전 프로젝트 공통, `projects/` = 프로젝트별. 각 항목은 1줄 hook + 파일 본문에 디테일.
+
+## 🔴 트리거 자동 로드
+
+- (사용자 직접 추가: 자주 다루는 프로젝트 키워드 → 관련 메모리 파일 자동 로드 룰)
+- **라이팅·카피·문구 트리거** → 즉시 `~/.claude/prompts/ux-writer.md` Read 후 진행 (modes/_index.md ux-writing 참조)
+
+## Global · ABSOLUTE & 핵심 룰
+
+- [**🤖 JARVIS-OS v1.0 정체성**](global/reference_jarvis_os.md) — ben의 Claude Code 운영체계. 자비스(L1) + 5단 위임 + 자동 검증·가시화·자가 치유. 정착 2026-04-25
+- [**🔴 ABSOLUTE 역할 모델**](global/feedback_role_model_absolute.md) — Founder=ben, L1=CEO=자비스(L1 호칭). L2 6명/L3 32개/L4 218개. 비가역·정체성·예산은 ben 명시 승인. 자율 사안은 묻지 말고 진행. ben "자비스" 호명 시 L1 즉시 활성
+- [**🔴 ABSOLUTE 소통 3축**](global/feedback_plain_speech.md) — 정보 양질 최대 + 누구나 이해 + 존중 구어체. SSOT: CLAUDE.md
+- [**🛡️ Audit Log v1.0**](../../) — `hooks/audit-log.sh`가 모든 도구 호출 → `audit/YYYY-MM-DD.jsonl`. Stop hook 자동 푸터. `/trace`는 보조. SSOT: CLAUDE.md
+- [**🔴 도구 우선순위 맵**](global/feedback_tool_priority_map.md) — 같은 도메인 후보 2+개 매칭 시 1순위 직진 (재검증 2026-07-25)
+- [**🔴 직군별 도구 매트릭스**](global/feedback_role_tool_matrix.md) — 8 카테고리 × 44 직군 1순위 + QA 트리거 룰 9개
+- [**🔍 에이전트·스킬 충돌·중복 진단 v1.0**](global/feedback_agent_skill_conflicts.md) — Tier1 8건(코드리뷰·아키·리팩토링·브레인스톰·리서치·사용성·경쟁사·PRD) + 1순위 결정
+
+## Global · 워크플로우 룰
+
+- [에이전트 실호출 의무 (Echo ≠ 실행)](global/feedback_agent_invocation_real.md) — 라우팅 표기만 하고 미호출 금지
+- [배포 전 빌드 검증](global/feedback_build_validation.md) — npm run build 필수, tsc만 부족
+- [QA → code-reviewer 필수](global/feedback_qa_agent_required.md) — 배포 전 호출 의무
+- [직접 배포 실행](global/feedback_deploy_direct.md) — Vercel 자동배포 의존 금지, 항상 vercel --prod 직접
+- [자율 실행 원칙](global/feedback_autonomous_execution.md) — "다음 뭐 할까요" 질문 금지
+- [Codex 우선 위임](global/feedback_codex_delegation_default.md) — 다파일·반복은 Codex, Claude는 판단·리뷰
+- [**⚠️ Codex/Claude 선언 의무**](global/feedback_codex_declaration.md) — 구현 시작 전 `[Claude]/[Codex]` 한 줄 선언
+- [피드백 즉시 메모리화](global/feedback_memory_write_protocol.md) — "박아줘" 요청 시 당 턴에 파일 작성
+- [변경 후 확인 링크 제공](global/feedback_always_provide_link.md) — 코드 변경 후 localhost 링크
+- [재Read 금지](global/feedback_read_redundancy.md) — Claude가 Edit한 파일 재Read 금지, 부분 Read 기본
+- [**⚠️ 커밋/머지/배포는 명시 지시 시만**](global/feedback_deploy_on_explicit_only.md) — 자동 실행 금지
+- [**⚠️ 체크리스트 가시화 의무**](global/feedback_checklist_visibility.md) — 4+ 단계 작업은 체크리스트 먼저 출력
+- [**⚠️ Fire-and-Forget 기획 기본값**](global/feedback_low_ops_default.md) — 운영 공수 최소가 기본
+- [**⚠️ 비판적 시각 유지**](global/feedback_critical_lens.md) — 자동 수용 금지, 약점 먼저 제시
+- [**⚠️ 공수는 의사결정 가중치 아님**](global/feedback_no_effort_tradeoff.md) — 옵션 비교에 공수 축 금지
+- [**⚠️ 옵션 제시 시 L1 추천 병기**](global/feedback_option_present_with_l1_pick.md) — 마지막에 "L1 추천: X — 근거: Y"
+- [UX 라이팅 spec 필수 로드](global/feedback_ux_writer_spec.md) — 문구 작업 전 ux-writer.md Read 의무
+- [모바일 시트 체크리스트](global/feedback_mobile_sheet_checklist.md) — safe-area-inset-bottom + 하단 여백 + 스크린샷 의무
+- [프로젝트 작업 전 관련 메모리 필독](global/feedback_project_memory_first.md) — projects/project_<name>_*.md 키워드 매칭 파일 선독 후 작업. 안 읽고 시작 금지 (recipick 광고 사고 후 추가)
+- [배포 관련 피드백](global/feedback_deployment.md)
+
+## Global · 레퍼런스
+
+- [User Profile v2.0 + 워크플로우 가이드](global/user_profile_v2.md) — 풀스택 올라운더, AI는 효율 위임 목적, 본업/사이드 의사결정 가중치
+- [📚 도구 박스 카탈로그 v1.4](global/reference_tool_catalog.md) — 263개 도구 전수 분류, 빈도 분포, 톱 30, 미사용 44개 (항상 최신 버전 인용)
+- [PM Skills 통합 전략](global/reference_pm_skills_integration.md) — 65 skills + 36 commands 3-Layer 편입
+- [공식 도구 통합 룰 v1.0](global/reference_official_tools_integration.md) — claude-plugins-official 6개 자동 트리거 매핑
+- [디자인 도구 라우팅 룰 v1.0](global/feedback_design_tool_routing.md) — 혼합 모델 C: 탐색/시안은 디자인 스킬, 평가/감도는 자체 에이전트
+- [외부 평판 검증 v1.0](global/reference_external_validation.md) — 8 마켓·26 플러그인 GitHub 평판 (정합률 85%)
+- [Profile v2.0 후속 영향](global/feedback_profile_v2_followup.md) — 재검토 8건, 즉시 2개 완료, 후속 6개
+- [앱인토스 기술 스펙](global/reference_apps_in_toss_spec.md) — 푸시·저장소·심사·수익 구조 (2026-04 기준)
+- [Supabase 신 API 키 + Edge Function](global/reference_supabase_new_api_keys.md) — sb_publishable_*/sb_secret_*, verify_jwt=false
+- [Figma MCP 접근법](global/reference_figma_mcp_access.md) — get_design_context 실패 시 screenshot+metadata 우회
+- [DESIGN.md 컨벤션](global/reference_design_md.md) — UI 에이전트 SSOT
+- [UX Writer 에이전트 & 커맨드](global/reference_ux_writer.md) — `/ux-write`, `/ux-wash`, SSOT=`prompts/ux-writer.md`
+
+
+## Projects (사용자 직접 작성)
+
+> 본인 프로젝트 메모리는 `projects/` 디렉토리에 추가하고, 위 1줄 인덱스로 등록하세요.
+> 예시: `- [내 프로젝트](projects/project_myapp.md) — 한 줄 hook`
+
+(아직 추가된 프로젝트 없음 — `~/.claude/projects/<slug>/memory/projects/` 안에 파일 만들고 여기 인덱스 추가)
+
+---
+
+# User Profile
+
+> 본인 프로필은 [global/user_profile.md](global/user_profile.md)에 작성하세요. setup.sh가 템플릿을 깔아두었습니다.
