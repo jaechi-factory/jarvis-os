@@ -203,9 +203,21 @@ L3 32개 Leader description + 호출 플로우 예시 + 리뷰어 풀: `AGENTS_R
 ## 6. 핵심 운영 규칙
 
 - **L1 → L2 위임이 기본** (섹션 4 MANDATORY 프로토콜 준수). L1이 L3 직접 호출은 사용자 명시 시만, L1 직접 처리는 섹션 4 "예외" 허용 목록만
+- **🔴 L2 → L3 위임도 강제** (2026-04-26 추가, 실제 위반 사례 발견 후 박음). 각 디렉터 정의 "🔴 L3 위임 강제 룰" 섹션 참조. L2가 자기가 직접 Read·Bash로 처리하고 L3 호출 안 하면 룰 위반
 - L2 → L3 호출 시 이전 에이전트 출력 전체 전달
 - 각 에이전트는 자신의 역할 밖 판단 금지
 - 여러 L2 간 협업은 L1이 조율 (L2끼리 서로 호출 금지)
 - GAN 시리즈는 pm-director 하에서 loop-operator와 결합 자동 반복 가능
 - Codex MCP (`codex-cli`)를 통해 GPT 세컨드 오피니언 가능
 - **모든 위임 결과는 섹션 3 5블록 리포트로 출력** — 스킵 시 규칙 위반
+
+### 🔴 L2 우회 자동 검출 (audit log 기반)
+
+audit log에서 **L2 디렉터 호출 후 5분 안에 Agent 호출 0건이면 L3 우회 의심 신호**. `/trace l2-check` 명령으로 즉시 검증.
+
+발견된 위반 패턴 (2026-04-25, 룰 강화 직전 마지막 사례):
+- design-director × 4 호출 → ui-designer/ux-strategist 호출 0건
+- engineering-director × 1 호출 → architect/code-architect 호출 0건
+- pm-director × 1 호출 (GAN 명시 요청) → gan-* 시리즈 호출 0건
+
+→ 모든 L2 디렉터 6명 정의에 "🔴 L3 위임 강제 룰" 박음 (2026-04-26).
