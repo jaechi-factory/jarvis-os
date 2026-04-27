@@ -29,18 +29,32 @@ Claude Code 켜고 **첫 메시지**에 그대로 입력:
 https://github.com/jaechi-factory/jarvis-os 설치해줘
 ```
 
-→ Claude가 알아서:
-1. 깃허브에서 다운로드
-2. 기존 `~/.claude` 자동 백업
-3. 룰·hook·메모리·플러그인 다 설치
-4. `/check-rules` 16/16 PASS 검증
-5. "재시작하세요" 안내
+→ Claude가 온보딩에서 먼저 이렇게 진행:
+1. JARVIS-OS를 3~5줄로 설명
+2. `어떻게 불러드릴까요? (한글 이름이나 닉네임)` 질문
+3. 입력한 이름으로 `{{USER_NAME}}` placeholder 전체 치환
+4. `setup.sh` 실행으로 설치 + 검증
+5. 자동 불가 항목(MCP 계정 연동) 직접 설정 안내
+
+권장 온보딩 설명 문구:
+- JARVIS-OS는 Claude Code를 팀처럼 운영하는 설정 묶음입니다.
+- 룰, 훅, 에이전트, 프롬프트, 메모리 템플릿을 한 번에 설치합니다.
+- "자비스" 호명과 사용자 이름 인식을 같이 설정합니다.
+- `/check-rules` 검증과 도구 호출 추적도 자동으로 활성화됩니다.
 
 ### 🟢 방법 B — 터미널에 한 줄
 
 ```bash
 bash <(curl -sL https://raw.githubusercontent.com/jaechi-factory/jarvis-os/main/setup.sh)
 ```
+
+실행 후 interactive prompt:
+
+```text
+Enter your name:
+```
+
+이름을 입력하면 방법 A와 같은 설치 흐름으로 진행됩니다.
 
 ### 🟡 방법 C — 수동 (디버깅용)
 
@@ -49,6 +63,22 @@ git clone https://github.com/jaechi-factory/jarvis-os.git
 cd jarvis-os
 bash setup.sh
 ```
+
+## 자동 설치 범위
+
+- CLI 구조: `~/.claude`, `~/.claude/projects/<slug>/memory`
+- Hooks: `core/hooks/*` → `~/.claude/hooks/*` + `chmod +x`
+- Rules/Commands/Agents/Prompts/Modes: `core/*` → `~/.claude/*`
+- MD 템플릿: `{{USER_NAME}}`를 입력 이름으로 치환
+- Memory templates: `memory-templates/*` 복사
+- Plugins 26개 + Skills 번들 자동 활성 (`settings.json`)
+
+## 자동 설치 후 사용자 직접 설정 필요
+
+- GitHub MCP 토큰 발급/연동: https://github.com/settings/personal-access-tokens/new
+- Figma API 토큰 발급/연동: https://www.figma.com/developers/api
+- Codex CLI 설치(필요 시): `npm install -g @openai/codex`
+- MCP 서버 연결 확인: `claude mcp list` (codex-cli / github / figma 수동 추가 가능)
 
 ## 설치 후 (3단계)
 

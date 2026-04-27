@@ -24,30 +24,67 @@
 | **Codex 위임 강제** | 코드 수정은 Codex가 / 판단·리뷰는 Claude가 |
 | **플러그인 26개** | superpowers / pm-skills / designer-skills 등 자동 설치 |
 
-## 🚀 30초 설치
+## 🚀 온보딩 (30초 시작)
 
-### 방법 1 — Claude Code에 한 줄 (마법, 추천)
+### 시나리오 A — Claude Code에 URL 한 줄 입력 (권장)
 
-Claude Code 켜고 첫 메시지로:
+Claude Code 첫 메시지에 아래 한 줄만 입력:
 
-```
+```text
 https://github.com/jaechi-factory/jarvis-os 설치해줘
 ```
 
-→ Claude가 알아서 다운로드·설치·검증까지 다 해줌. 끝나면 "Claude Code 재시작하세요" 안내.
+Claude 온보딩 표준 흐름:
 
-### 방법 2 — 터미널에 한 줄
+1. README를 읽고 JARVIS-OS를 3~5줄로 설명
+2. 아래 질문으로 이름 확인
+   - `어떻게 불러드릴까요? (한글 이름이나 닉네임)`
+3. 입력한 이름으로 `{{USER_NAME}}` placeholder 전체 치환
+4. 자동 설치 실행 (`setup.sh`) 후 설치/검증 결과 요약
+
+온보딩 중 Claude가 먼저 보여줄 설명(권장 문구):
+
+- JARVIS-OS는 Claude Code를 팀처럼 운영하는 설정 묶음이에요.
+- 룰, 훅, 에이전트, 프롬프트, 메모리 템플릿을 한 번에 세팅해줘요.
+- 설치 후에는 "자비스" 호명과 사용자 이름을 같이 인식해요.
+- `/check-rules` 검증과 도구 호출 추적까지 자동으로 켜져요.
+
+### 시나리오 B — 터미널에서 `setup.sh` 실행
 
 ```bash
 bash <(curl -sL https://raw.githubusercontent.com/jaechi-factory/jarvis-os/main/setup.sh)
 ```
 
+실행하면 stdin interactive prompt가 뜹니다:
+
+```text
+Enter your name:
+```
+
+입력한 이름으로 동일한 설치 흐름이 적용됩니다.
+
+### 자동 설치 범위
+
+- CLI: `~/.claude` 디렉토리/프로젝트 메모리 구조 생성
+- Hooks: `core/hooks/*` → `~/.claude/hooks/*` 복사 + 실행 권한
+- Rules/Commands/Agents/Prompts/Modes: `core/*` → `~/.claude/*` 복사
+- MD 파일: `{{USER_NAME}}` 치환 후 배치 (`CLAUDE.md`, `AGENTS_SYSTEM.md` 등)
+- Memory templates: `memory-templates/*` → `~/.claude/projects/<slug>/memory/*`
+- Plugins 26개: `settings.json` 자동 생성 + enable
+- Skills 번들: superpowers / pm-skills / designer-skills / ui-ux-pro-max 자동 활성
+
+### 자동 설치 후 사용자 직접 설정 필요
+
+- GitHub MCP 토큰 발급/연동: https://github.com/settings/personal-access-tokens/new
+- Figma 토큰 발급/연동: https://www.figma.com/developers/api
+- Codex CLI 설치(필요 시): `npm install -g @openai/codex`
+- MCP 서버 연결 확인: `claude mcp list` (codex-cli / github / figma 수동 추가 가능)
+
 ### 설치 후 (3분)
 
 1. **Claude Code 재시작** (`claude` 다시 실행)
 2. **본인 프로필** 작성: `~/.claude/projects/<slug>/memory/global/user_profile.md`
-   - 자비스가 첫 세션에서 안내해줌
-3. **자비스에게 인사**: `"자비스, 안녕"` → 5블록 + 자동 푸터로 응답 시작
+3. **자비스에게 인사**: `"자비스, 안녕"` 또는 `"<내 이름> 누구야?"`
 
 ## 📚 더 보기
 
@@ -71,7 +108,7 @@ bash <(curl -sL https://raw.githubusercontent.com/jaechi-factory/jarvis-os/main/
 
 ## 📜 라이선스
 
-비공개 저장소. {{USER_NAME}}이 초대한 사람만 사용.
+공개 전환 준비 중. 현재는 저장소 정책에 따라 사용해 주세요.
 
 ## 🤝 만든이
 
