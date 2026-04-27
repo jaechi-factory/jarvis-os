@@ -1,5 +1,6 @@
 # JARVIS-OS v1.0
 
+> 제작: Ben(이치훈) · GitHub @jaechi-factory
 > **Claude Code를 자비스처럼 똑똑하게 굴리는 운영체계**
 
 영화 아이언맨의 자비스가 토니 스타크의 모든 걸 알아서 처리하듯, JARVIS-OS는 Claude Code 안에서 **5단 조직(Founder → CEO 자비스 → C-Level → Leader → Worker)** + **자동 검증** + **자가 치유**가 굴러가는 시스템이에요.
@@ -74,4 +75,4 @@ bash <(curl -sL https://raw.githubusercontent.com/jaechi-factory/jarvis-os/main/
 
 ## 🤝 만든이
 
-{{USER_NAME}} (jaechi-factory) — 한국 IT 풀스택 프로덕트 디자이너 + 자비스
+Ben(이치훈) (jaechi-factory) — 한국인 풀스택 개발자

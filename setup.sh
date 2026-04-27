@@ -39,8 +39,8 @@ err()  { echo -e "${RED}✗${NC} $*"; exit 1; }
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "   JARVIS-OS v1.0 자동 설치"
-echo "   ben의 Claude Code 운영체계"
-echo "   GitHub: jaechi-factory/jarvis-os"
+echo "   제작: Ben(이치훈) · GitHub @jaechi-factory"
+echo "   Repo: github.com/jaechi-factory/jarvis-os"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 

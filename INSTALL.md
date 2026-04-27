@@ -1,5 +1,7 @@
 # INSTALL — JARVIS-OS v1.0 설치 가이드
 
+> 제작: Ben(이치훈) · GitHub @jaechi-factory
+
 ## 사전 조건 (5분)
 
 1. **Claude Code CLI 설치** — https://claude.ai/code
