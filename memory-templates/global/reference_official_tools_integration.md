@@ -1,24 +1,24 @@
 ---
 name: 공식 도구 통합 룰 v1.0 (Official Tools Integration)
-description: claude-plugins-official 마켓플레이스 6개 도구(code-review, context7, figma, frontend-design, skill-creator, superpowers) 자동 트리거 매핑. ben 지시 "공식 도구는 모두 잘 쓰일 수 있도록" 반영. 외부 평판 검증 완료 (anthropics/claude-plugins-official 17k stars)
+description: claude-plugins-official 마켓플레이스 6개 도구(code-review, context7, figma, frontend-design, skill-creator, superpowers) 자동 트리거 매핑. {{USER_NAME}} 지시 "공식 도구는 모두 잘 쓰일 수 있도록" 반영. 외부 평판 검증 완료 (anthropics/claude-plugins-official 17k stars)
 type: reference
 originSessionId: bb874fd4-6435-488a-84fa-378c95117d29
 ---
 # 공식 도구 통합 룰 v1.0
 
 **작성**: 2026-04-25
-**근거**: ben 지시 "Anthropic 공식 도구는 모두 잘 쓰일 수 있도록 만들어"
+**근거**: {{USER_NAME}} 지시 "Anthropic 공식 도구는 모두 잘 쓰일 수 있도록 만들어"
 **SSOT 정합**: `reference_external_validation.md` (정합률 85%) + `feedback_role_tool_matrix.md` v1.0
 
 ---
 
 ## Why
 
-claude-plugins-official 6개 도구가 깔려 있는데 활용도 차이가 큼. code-review·superpowers는 잘 쓰지만 skill-creator·context7은 거의 안 씀. ben이 "공식이라 품질 검증된 거니까 모두 활용하라"고 명시 → 자동 트리거 룰 6개 박음.
+claude-plugins-official 6개 도구가 깔려 있는데 활용도 차이가 큼. code-review·superpowers는 잘 쓰지만 skill-creator·context7은 거의 안 씀. {{USER_NAME}}이 "공식이라 품질 검증된 거니까 모두 활용하라"고 명시 → 자동 트리거 룰 6개 박음.
 
 ## How to apply
 
-ben 메시지에서 트리거 키워드 매칭되면 해당 도구 자동 호출. 매트릭스 1순위와 충돌 시 매트릭스 우선 (단, 공식 도구가 보조 위치로 항상 페어링).
+{{USER_NAME}} 메시지에서 트리거 키워드 매칭되면 해당 도구 자동 호출. 매트릭스 1순위와 충돌 시 매트릭스 우선 (단, 공식 도구가 보조 위치로 항상 페어링).
 
 ---
 
@@ -92,7 +92,7 @@ ben 메시지에서 트리거 키워드 매칭되면 해당 도구 자동 호출
 
 **자동 호출 시점**:
 - 같은 작업 3회 이상 반복 감지 시 → "스킬로 만들까요?" 제안
-- ben이 자동화 명시 요청 시
+- {{USER_NAME}}이 자동화 명시 요청 시
 
 **활용 빈도**: 가끔 (단발성). 단, 자동화 가치 높을 때 적극 활용.
 
@@ -148,8 +148,8 @@ ben 메시지에서 트리거 키워드 매칭되면 해당 도구 자동 호출
 
 ## 한계 (정직)
 
-- 자동 호출은 트리거 키워드 매칭에 의존. ben이 다른 표현 쓰면 미발동 가능 (예: "Figma" 대신 "그 디자인 화면")
-- 트리거 표가 ben 일상 어휘와 다를 수 있음. 사용 누적 후 보강 필요
+- 자동 호출은 트리거 키워드 매칭에 의존. {{USER_NAME}}이 다른 표현 쓰면 미발동 가능 (예: "Figma" 대신 "그 디자인 화면")
+- 트리거 표가 {{USER_NAME}} 일상 어휘와 다를 수 있음. 사용 누적 후 보강 필요
 - skill-creator 자동 제안은 사용자 부담 (제안만으로도 거슬릴 수 있음). 신중히
 - frontend-design은 패턴 가이드용. 실제 코드 작성은 Codex 위임 룰 우선
 - feature-dev는 우리 마켓에 없음 (이전 외부 평판 sub-agent 보고 일부 부정확). 6개 한정

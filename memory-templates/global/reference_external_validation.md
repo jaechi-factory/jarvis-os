@@ -37,7 +37,7 @@ originSessionId: bb874fd4-6435-488a-84fa-378c95117d29
 **활성 기준**: 🟢 최근 1개월 / 🟡 1~3개월 / 🔴 3개월+
 
 **주요 발견**:
-- ben이 깐 8개 중 7개는 **외부 평판 강세**. 단 2개(designer-skills, frontend-design-audit)가 약함
+- {{USER_NAME}}이 깐 8개 중 7개는 **외부 평판 강세**. 단 2개(designer-skills, frontend-design-audit)가 약함
 - **superpowers 167k**는 압도적 외부 1위 — 우리도 이미 설치+적극 사용 중 → 정합
 - **claude-mem 67k**, **ui-ux-pro-max 70k** 둘 다 외부 톱 — 우리도 설치 → 정합
 
@@ -107,7 +107,7 @@ originSessionId: bb874fd4-6435-488a-84fa-378c95117d29
 #### 🆕 **ship** (PR commit→prod 풀 파이프라인)
 - **용도**: lint→test→review→prod 배포 자동화
 - **우리와 차이**: 우리는 vercel MCP + 수동 단계. ship은 풀 자동
-- **한국 풀스택 PD 적합도**: 중하 (배포는 ben Founder 명시 승인 필요 — 자동화 효과 제한)
+- **한국 풀스택 PD 적합도**: 중하 (배포는 {{USER_NAME}} Founder 명시 승인 필요 — 자동화 효과 제한)
 - **L1 추천도**: 🔴 **비추** — Founder 명시 승인 게이트 룰 위반 위험. 기존 워크플로우 유지
 
 ### PM 보강
@@ -116,7 +116,7 @@ originSessionId: bb874fd4-6435-488a-84fa-378c95117d29
 - **용도**: Senior PM 30+ frameworks, 디스커버리/전략/딜리버리/SaaS 메트릭/PM 커리어 코칭/AI 제품 craft
 - **우리와 차이**: phuryn pm-skills는 65 skills + 36 commands (광범위·실무), deanpeters는 시니어 PM 의사결정 프레임워크 깊이
 - **한국 풀스택 PD 적합도**: 중상 (영문이나 프레임워크 자체는 글로벌 표준)
-- **L1 추천도**: 🟢 **추가 검토** — pm-skills와 보완적. ben이 사업 방향 결정 같은 시니어 의사결정 자주 하면 가치 큼
+- **L1 추천도**: 🟢 **추가 검토** — pm-skills와 보완적. {{USER_NAME}}이 사업 방향 결정 같은 시니어 의사결정 자주 하면 가치 큼
 
 #### 🆕 **alirezarezvani/claude-skills** (12,646 stars, 232+ skills)
 - **용도**: 232 스킬 풀 (engineering·marketing·product·compliance·C-level)
@@ -214,15 +214,15 @@ originSessionId: bb874fd4-6435-488a-84fa-378c95117d29
 
 ## 7. 결론 한 줄
 
-**우리 매트릭스 정합률 85% (11/13). v1.1 갱신: Profile v2.0 풀스택 올라운더 반영 → 강등 권고 2건 모두 완화(designer-skills + frontend-design-audit, 실호출 빈도 추적으로 전환). 강화 매핑 1건(feature-dev)만 즉시 반영 권고. ben이 깐 8 마켓플레이스는 대체로 외부 톱과 정합 — 한국 풀스택 PD 매트릭스 SSOT 유지.**
+**우리 매트릭스 정합률 85% (11/13). v1.1 갱신: Profile v2.0 풀스택 올라운더 반영 → 강등 권고 2건 모두 완화(designer-skills + frontend-design-audit, 실호출 빈도 추적으로 전환). 강화 매핑 1건(feature-dev)만 즉시 반영 권고. {{USER_NAME}}이 깐 8 마켓플레이스는 대체로 외부 톱과 정합 — 한국 풀스택 PD 매트릭스 SSOT 유지.**
 
 ---
 
 ## 8. v1.1 갱신 노트 (2026-04-25)
 
 - **평가 기준 정정**: "한국 PD 친화도" → "한국 풀스택 PD 친화도" (Profile v2.0 반영)
-- **영문 도구 강등 권고 완화**: ben이 코드·평가지표 직독 가능, 영문 부담 적음
+- **영문 도구 강등 권고 완화**: {{USER_NAME}}이 코드·평가지표 직독 가능, 영문 부담 적음
   - designer-skills: 강등 후보 → 정합으로 상향 (카테고리 풀 커버리지 유지)
   - frontend-design-audit: 강등 권고 → 보조 유지 (실호출 빈도 추적 후 재평가)
 - **pm-market-research 영문 IR 톤**: 본문에 명시 강등 권고 없었음 — 별도 정정 불필요. Profile v2.0 적용으로 자동 재고 가능
-- **다음 재검증**: 2026-07-25 (분기), 또는 ben 픽 결과 반영 시
+- **다음 재검증**: 2026-07-25 (분기), 또는 {{USER_NAME}} 픽 결과 반영 시

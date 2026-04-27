@@ -318,11 +318,11 @@ for p, n in sorted(seen.items(), key=lambda x: -x[1]):
 ## 결과 해석
 
 - **Echo와 audit log 100% 매칭** = L1이 5블록에 적은 게 진실
-- **Echo는 있는데 audit log에 없음** = 거짓 보고. 즉시 ben한테 사실 정정 + 메모리 `feedback_agent_invocation_real.md` 위반
+- **Echo는 있는데 audit log에 없음** = 거짓 보고. 즉시 {{USER_NAME}}한테 사실 정정 + 메모리 `feedback_agent_invocation_real.md` 위반
 - **Audit log에는 있는데 Echo에 없음** = 보고 누락 (덜 심각하지만 가시성 룰 위반)
 
 ## 주의
 
 - audit log는 **PostToolUse hook이 실행된 도구**만 잡음 — 모델 내부 사고/계획은 못 잡음 (그건 transcript에 있음)
-- `/trace`는 진단 도구지 강제력은 없음. Claude가 거짓 Echo 작성하는 걸 막진 못하지만, ben이 의심날 때 즉시 검증 가능
-- 강제력은 별도로 Stop hook에서 자동 verify를 박는 방식으로 추후 확장 가능 (지금은 ben 트리거 방식)
+- `/trace`는 진단 도구지 강제력은 없음. Claude가 거짓 Echo 작성하는 걸 막진 못하지만, {{USER_NAME}}이 의심날 때 즉시 검증 가능
+- 강제력은 별도로 Stop hook에서 자동 verify를 박는 방식으로 추후 확장 가능 (지금은 {{USER_NAME}} 트리거 방식)

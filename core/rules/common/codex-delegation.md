@@ -76,6 +76,6 @@ Codex 한 번 호출 = 원자 단위 하나. 끊기면 Claude가 릴레이.
 
 ## 사용자 UX
 
-ben(Founder)은 이 규칙을 외울 필요 없음. Claude가 자동 판단·선언·위임. ben은 `[Claude]` 또는 `[Codex]` 선언만 보면 됨.
+{{USER_NAME}}(Founder)은 이 규칙을 외울 필요 없음. Claude가 자동 판단·선언·위임. {{USER_NAME}}은 `[Claude]` 또는 `[Codex]` 선언만 보면 됨.
 
-> **위임 동기 명확화 (Profile v2.0)**: Codex 우선은 ben이 코드를 못 짜서가 아니라 **토큰·속도 효율** 때문. ben은 풀스택 올라운더로 코드 직접 읽고 검수 가능. Codex 위임은 L1의 토큰 부담 완화 + 다파일 일괄 처리 효율 측면.
+> **위임 동기 명확화 (Profile v2.0)**: Codex 우선은 {{USER_NAME}}이 코드를 못 짜서가 아니라 **토큰·속도 효율** 때문. {{USER_NAME}}은 풀스택 올라운더로 코드 직접 읽고 검수 가능. Codex 위임은 L1의 토큰 부담 완화 + 다파일 일괄 처리 효율 측면.

@@ -9,8 +9,8 @@
 
 ## Global · ABSOLUTE & 핵심 룰
 
-- [**🤖 JARVIS-OS v1.0 정체성**](global/reference_jarvis_os.md) — ben의 Claude Code 운영체계. 자비스(L1) + 5단 위임 + 자동 검증·가시화·자가 치유. 정착 2026-04-25
-- [**🔴 ABSOLUTE 역할 모델**](global/feedback_role_model_absolute.md) — Founder=ben, L1=CEO=자비스(L1 호칭). L2 6명/L3 32개/L4 218개. 비가역·정체성·예산은 ben 명시 승인. 자율 사안은 묻지 말고 진행. ben "자비스" 호명 시 L1 즉시 활성
+- [**🤖 JARVIS-OS v1.0 정체성**](global/reference_jarvis_os.md) — {{USER_NAME}}의 Claude Code 운영체계. 자비스(L1) + 5단 위임 + 자동 검증·가시화·자가 치유. 정착 2026-04-25
+- [**🔴 ABSOLUTE 역할 모델**](global/feedback_role_model_absolute.md) — Founder={{USER_NAME}}, L1=CEO=자비스(L1 호칭). L2 6명/L3 32개/L4 218개. 비가역·정체성·예산은 {{USER_NAME}} 명시 승인. 자율 사안은 묻지 말고 진행. {{USER_NAME}} "자비스" 호명 시 L1 즉시 활성
 - [**🔴 ABSOLUTE 소통 3축**](global/feedback_plain_speech.md) — 정보 양질 최대 + 누구나 이해 + 존중 구어체. SSOT: CLAUDE.md
 - [**🛡️ Audit Log v1.0**](../../) — `hooks/audit-log.sh`가 모든 도구 호출 → `audit/YYYY-MM-DD.jsonl`. Stop hook 자동 푸터. `/trace`는 보조. SSOT: CLAUDE.md
 - [**🔴 도구 우선순위 맵**](global/feedback_tool_priority_map.md) — 같은 도메인 후보 2+개 매칭 시 1순위 직진 (재검증 2026-07-25)

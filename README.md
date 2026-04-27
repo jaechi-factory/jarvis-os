@@ -70,8 +70,8 @@ bash <(curl -sL https://raw.githubusercontent.com/jaechi-factory/jarvis-os/main/
 
 ## 📜 라이선스
 
-비공개 저장소. ben이 초대한 사람만 사용.
+비공개 저장소. {{USER_NAME}}이 초대한 사람만 사용.
 
 ## 🤝 만든이
 
-ben (jaechi-factory) — 한국 IT 풀스택 프로덕트 디자이너 + 자비스
+{{USER_NAME}} (jaechi-factory) — 한국 IT 풀스택 프로덕트 디자이너 + 자비스

@@ -15,7 +15,7 @@ originSessionId: 4a40aa27-02f0-4e7f-b05d-c810c7c4ac87
   - `/ux-write` — 개별 문구 즉석 교정
   - `/ux-wash` — 프로젝트 전체 UI 문구 일괄 워싱 (--dry-run / --apply)
 - **프롬프트 SSOT**: `~/.claude/prompts/ux-writer.md` — **ver 1.0 (2026-04-20 Founder 정의)**, GAN 라운드 6 평균 88.0/100 도달 안
-- **단일 SSOT**: `~/.claude/prompts/ux-writer.md` ver 1.0 단독 보존. 옛 GAN 라운드(v6.1, v6-mt 멀티턴 4파일 등)는 ben 명시 지시로 2026-04-25 모두 삭제. 복구 필요 시 git history 의존
+- **단일 SSOT**: `~/.claude/prompts/ux-writer.md` ver 1.0 단독 보존. 옛 GAN 라운드(v6.1, v6-mt 멀티턴 4파일 등)는 {{USER_NAME}} 명시 지시로 2026-04-25 모두 삭제. 복구 필요 시 git history 의존
 
 ## 언제 사용
 

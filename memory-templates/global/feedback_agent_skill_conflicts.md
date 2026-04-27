@@ -11,7 +11,7 @@ originSessionId: d7fff20e-9262-4005-9636-8b3d6923e2af
 
 ---
 
-## 🔴 Tier 1 — 즉시 해소 필요 (실제 라우팅 충돌, ben이 매번 헷갈림)
+## 🔴 Tier 1 — 즉시 해소 필요 (실제 라우팅 충돌, {{USER_NAME}}이 매번 헷갈림)
 
 ### C-1. "코드 리뷰" 영역 — 4중 매칭
 
@@ -37,7 +37,7 @@ originSessionId: d7fff20e-9262-4005-9636-8b3d6923e2af
 | `architect` | agents/ | 시스템 레벨 아키텍처 |
 | `code-architect` | agents/ | 코드 레벨, 모듈/패키지 구조 |
 
-**문제**: AGENTS_SYSTEM.md엔 둘 다 engineering-director 소속, 차이가 description으로만 구분 → ben 시점에서 모호
+**문제**: AGENTS_SYSTEM.md엔 둘 다 engineering-director 소속, 차이가 description으로만 구분 → {{USER_NAME}} 시점에서 모호
 **1순위 결정**:
 - "시스템 설계, 새 프로젝트 구조" → `architect`
 - "기존 코드 리팩토링용 모듈 분할" → `code-architect`
@@ -67,7 +67,7 @@ originSessionId: d7fff20e-9262-4005-9636-8b3d6923e2af
 | `pm-product-discovery:brainstorm-ideas-new` | skill | PM/디자이너/엔지니어 3관점 |
 | `pm-product-strategy:value-proposition` | skill (인접) | JTBD |
 
-**문제**: ben이 "아이디어"라고 말하면 4개 동시 후보. superpowers는 "MUST USE" 주장 → 항상 발동돼야 함
+**문제**: {{USER_NAME}}이 "아이디어"라고 말하면 4개 동시 후보. superpowers는 "MUST USE" 주장 → 항상 발동돼야 함
 **1순위 결정** (의도별):
 - 모호한 요구사항 발굴 → `--brainstorm` 모드 (Socratic 다이얼로그)
 - 신규 제품/기능 ideation → `pm-product-discovery:brainstorm-ideas-new` (PM/디자이너/엔지니어 3관점, 가장 구조적)
@@ -183,7 +183,7 @@ originSessionId: d7fff20e-9262-4005-9636-8b3d6923e2af
 | W-4 | GAN 활용 빈도 | 1주 데이터 후 |
 | W-5 | CE review pool | 1주 데이터 후 |
 
-**Action 사이클**: audit log 누적 1주 → `/trace agents` + `/trace recent N` → 호출 빈도 0인 도구 식별 → 카탈로그 미사용 라벨링 → ben 픽 받아 정리
+**Action 사이클**: audit log 누적 1주 → `/trace agents` + `/trace recent N` → 호출 빈도 0인 도구 식별 → 카탈로그 미사용 라벨링 → {{USER_NAME}} 픽 받아 정리
 **다음 측정 시점**: 2026-05-02 (1주 후)
 
 ---
@@ -198,7 +198,7 @@ originSessionId: d7fff20e-9262-4005-9636-8b3d6923e2af
 
 ### O-2. SuperClaude /sc:* 30+ commands
 - /sc:design, /sc:workflow, /sc:implement, /sc:troubleshoot 등
-- ben이 명시적으로 부르는 일 거의 없음
+- {{USER_NAME}}이 명시적으로 부르는 일 거의 없음
 - 자동 트리거 룰에도 빠져있음
 - **액션**: 명시 호출만 허용. 자동 트리거 추가 안 함
 
@@ -208,7 +208,7 @@ originSessionId: d7fff20e-9262-4005-9636-8b3d6923e2af
 
 ### R-1. "같은 의도 영역에 후보 2+개" 룰
 - 이 진단 파일 1순위 따름
-- 1순위 미정의 영역은 ben한테 선택지 제시 (3개 이하로)
+- 1순위 미정의 영역은 {{USER_NAME}}한테 선택지 제시 (3개 이하로)
 
 ### R-2. "MUST BE USED" 주장 충돌 시
 - 더 좁은 전문성 우선 (typescript-reviewer > code-reviewer)
@@ -226,6 +226,6 @@ audit log 1주일 운영 후:
 1. 실제 호출 빈도 톱 30 vs 카탈로그 톱 30 일치율
 2. "Echo만 하고 호출 안 한" 케이스 0건 검증
 3. 미호출 도구 비율 (현재 카탈로그 v1.4 기준 61%) 재측정
-4. 충돌 영역 중 ben이 "잘못 호출됐다" 신고 횟수
+4. 충돌 영역 중 {{USER_NAME}}이 "잘못 호출됐다" 신고 횟수
 
 분기 재검증: 2026-07-25

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Stop hook: prints a compact "this session's tool call summary" footer
-# automatically after every response. ben doesn't need to remember /trace.
+# automatically after every response. {{USER_NAME}} doesn't need to remember /trace.
 #
 # Source of truth: ~/.claude/audit/YYYY-MM-DD.jsonl (written by audit-log.sh)
 # Filter: same session_id only (one footer = one session's accumulated calls)
