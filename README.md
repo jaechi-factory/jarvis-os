@@ -72,6 +72,7 @@ Enter your name:
 - Memory templates: `memory-templates/*` → `~/.claude/projects/<slug>/memory/*`
 - Plugins 26개: `settings.json` 자동 생성 + enable
 - Skills 번들: superpowers / pm-skills / designer-skills / ui-ux-pro-max 자동 활성
+- 설치 검증: `/check-rules` + CLI/plugin/skill/hook/agent/MCP 상태 PASS/WARN/FAIL 자동 점검
 
 ### 자동 설치 후 사용자 직접 설정 필요
 

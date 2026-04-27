@@ -98,6 +98,27 @@ else:
 PY
 }
 
+verify_pass() {
+  local name="$1"
+  local detail="$2"
+  echo "  ✅ [$name] $detail"
+  VERIFY_PASS=$((VERIFY_PASS + 1))
+}
+
+verify_warn() {
+  local name="$1"
+  local detail="$2"
+  echo "  ⚠️  [$name] $detail"
+  VERIFY_WARN=$((VERIFY_WARN + 1))
+}
+
+verify_fail() {
+  local name="$1"
+  local detail="$2"
+  echo "  ❌ [$name] $detail"
+  VERIFY_FAIL=$((VERIFY_FAIL + 1))
+}
+
 # ───────────────────────────────────────
 # 1. 시작 배너
 # ───────────────────────────────────────
@@ -112,7 +133,7 @@ echo ""
 # ───────────────────────────────────────
 # 2. 사전 조건 확인
 # ───────────────────────────────────────
-log "[1/10] 사전 조건 확인"
+log "[1/11] 사전 조건 확인"
 
 if ! command -v claude &>/dev/null; then
   err "Claude Code CLI가 없습니다. https://claude.ai/code 에서 설치 후 다시 실행"
@@ -132,7 +153,7 @@ ok "  Git: $(git --version | head -1)"
 # ───────────────────────────────────────
 # 3. 작업 위치 결정
 # ───────────────────────────────────────
-log "[2/10] 작업 위치 결정"
+log "[2/11] 작업 위치 결정"
 
 CLAUDE_DIR="$HOME/.claude"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -150,7 +171,7 @@ ok "  source: $SCRIPT_DIR"
 # ───────────────────────────────────────
 # 4. 이름 온보딩
 # ───────────────────────────────────────
-log "[3/10] 사용자 이름 온보딩"
+log "[3/11] 사용자 이름 온보딩"
 
 echo "  JARVIS-OS는 Claude Code를 팀처럼 운영해주는 설정 묶음입니다."
 echo "  룰/에이전트/훅/메모리/플러그인을 한 번에 깔고,"
@@ -177,7 +198,7 @@ ok "  인식 규칙: '자비스' + '$USER_NAME'"
 # ───────────────────────────────────────
 # 5. 기존 ~/.claude 백업
 # ───────────────────────────────────────
-log "[4/10] 기존 ~/.claude 백업"
+log "[4/11] 기존 ~/.claude 백업"
 
 if [[ -d "$CLAUDE_DIR" ]]; then
   BACKUP_DIR="${CLAUDE_DIR}.backup-$(date +%Y%m%d-%H%M%S)"
@@ -191,7 +212,7 @@ fi
 # ───────────────────────────────────────
 # 6. core/ 복사 (룰·hook·command·prompt)
 # ───────────────────────────────────────
-log "[5/10] OS 본체 복사 (core/)"
+log "[5/11] OS 본체 복사 (core/)"
 
 # 자동 로드 룰 5
 cp "$SCRIPT_DIR"/core/CLAUDE.md "$CLAUDE_DIR/"
@@ -235,7 +256,7 @@ ok "  prompts/ $(find "$CLAUDE_DIR/prompts" -type f -name '*.md' | wc -l | tr -d
 # ───────────────────────────────────────
 # 7. 메모리 디렉토리 + 템플릿 복사
 # ───────────────────────────────────────
-log "[6/10] 메모리 템플릿 복사"
+log "[6/11] 메모리 템플릿 복사"
 
 # slug 계산: HOME path → claude-mem 패턴
 SLUG="${HOME//\//-}"
@@ -274,7 +295,7 @@ touch "$MEM_DIR/projects/.gitkeep"
 # ───────────────────────────────────────
 # 8. 사용자 이름 치환 + 호명 메모리 생성
 # ───────────────────────────────────────
-log "[7/10] 사용자 이름 치환 + 호명 설정"
+log "[7/11] 사용자 이름 치환 + 호명 설정"
 
 replace_user_placeholders
 ok "  {{USER_NAME}} 치환 완료: ${PLACEHOLDER_REPLACED} 파일"
@@ -304,7 +325,7 @@ fi
 # ───────────────────────────────────────
 # 9. settings.json 생성
 # ───────────────────────────────────────
-log "[8/10] settings.json 생성 (플러그인/스킬)"
+log "[8/11] settings.json 생성 (플러그인/스킬)"
 
 if [[ -f "$CLAUDE_DIR/settings.json" ]]; then
   cp "$CLAUDE_DIR/settings.json" "$CLAUDE_DIR/settings.json.before-jarvis-os"
@@ -320,20 +341,111 @@ ok "  defaultMode: acceptEdits (Edit/Write 자동 승인, Bash는 첫 호출 시
 # ───────────────────────────────────────
 # 10. /check-rules 검증
 # ───────────────────────────────────────
-log "[9/10] 정합성 검증 (/check-rules)"
+log "[9/11] 정합성 검증 (/check-rules)"
 
+CHECK_RULES_PASS=0
 if [[ -x "$CLAUDE_DIR/hooks/check-rules.sh" ]]; then
   echo ""
-  bash "$CLAUDE_DIR/hooks/check-rules.sh" 2>&1 | tail -22
+  CHECK_RULES_OUTPUT=$(bash "$CLAUDE_DIR/hooks/check-rules.sh" 2>&1 || true)
+  echo "$CHECK_RULES_OUTPUT" | tail -22
   echo ""
+  if echo "$CHECK_RULES_OUTPUT" | grep -q "PASS=16"; then
+    CHECK_RULES_PASS=1
+  fi
 else
   warn "  check-rules.sh 누락 (수동 검증 필요)"
 fi
 
 # ───────────────────────────────────────
-# 11. 마무리 안내
+# 11. 설치 상태 자동 점검
 # ───────────────────────────────────────
-log "[10/10] 설치 완료"
+log "[10/11] 설치 상태 자동 점검"
+
+VERIFY_PASS=0
+VERIFY_WARN=0
+VERIFY_FAIL=0
+
+if [[ "$CHECK_RULES_PASS" -eq 1 ]]; then
+  verify_pass "/check-rules" "16/16 PASS 확인"
+else
+  verify_warn "/check-rules" "16/16 PASS를 파싱하지 못함 (출력 확인 필요)"
+fi
+
+if command -v claude >/dev/null 2>&1 && [[ -d "$CLAUDE_DIR" ]] && [[ -d "$MEM_DIR" ]]; then
+  verify_pass "CLI" "~/.claude 구조 + claude --version 준비됨"
+else
+  verify_fail "CLI" "Claude CLI 또는 설치 디렉토리 점검 필요"
+fi
+
+HOOK_TOTAL=$(find "$CLAUDE_DIR/hooks" -type f -name '*.sh' 2>/dev/null | wc -l | tr -d ' ')
+HOOK_EXEC=$(find "$CLAUDE_DIR/hooks" -type f -name '*.sh' -perm -u=x 2>/dev/null | wc -l | tr -d ' ')
+if [[ "${HOOK_TOTAL:-0}" -gt 0 && "${HOOK_TOTAL:-0}" -eq "${HOOK_EXEC:-0}" ]]; then
+  verify_pass "Hook" "${HOOK_EXEC}개 실행 권한 확인"
+else
+  verify_fail "Hook" "hook 파일/실행권한 불일치 (total=${HOOK_TOTAL:-0}, exec=${HOOK_EXEC:-0})"
+fi
+
+RULE_TOTAL=$(find "$CLAUDE_DIR/rules/common" -type f -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+CMD_TOTAL=$(find "$CLAUDE_DIR/commands" -type f -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+AGENT_TOTAL=$(find "$CLAUDE_DIR/agents" -type f -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+MODE_TOTAL=$(find "$CLAUDE_DIR/modes" -type f -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+if [[ "${RULE_TOTAL:-0}" -ge 7 && "${CMD_TOTAL:-0}" -ge 1 && "${AGENT_TOTAL:-0}" -ge 30 && "${MODE_TOTAL:-0}" -ge 8 ]]; then
+  verify_pass "Rules/Commands/Agents/Modes" "rules=${RULE_TOTAL}, commands=${CMD_TOTAL}, agents=${AGENT_TOTAL}, modes=${MODE_TOTAL}"
+else
+  verify_fail "Rules/Commands/Agents/Modes" "복사 수량이 기대치 미달 (rules=${RULE_TOTAL}, commands=${CMD_TOTAL}, agents=${AGENT_TOTAL}, modes=${MODE_TOTAL})"
+fi
+
+if [[ "${PLUGIN_COUNT:-0}" -ge 26 ]]; then
+  verify_pass "Plugin" "enabledPlugins ${PLUGIN_COUNT}개"
+else
+  verify_fail "Plugin" "enabledPlugins 수량 부족 (${PLUGIN_COUNT:-0})"
+fi
+
+SKILL_BUNDLE_OK=$(CLAUDE_DIR="$CLAUDE_DIR" python3 - <<'PY'
+import json
+import os
+from pathlib import Path
+p = Path(os.environ["CLAUDE_DIR"]) / "settings.json"
+if not p.exists():
+    print("FAIL")
+else:
+    keys = set(json.loads(p.read_text()).get("enabledPlugins", {}).keys())
+    required = [
+        "superpowers@claude-plugins-official",
+        "pm-toolkit@pm-skills",
+        "design-research@designer-skills",
+        "ui-ux-pro-max@ui-ux-pro-max-skill",
+    ]
+    print("OK" if all(r in keys for r in required) else "FAIL")
+PY
+)
+if [[ "$SKILL_BUNDLE_OK" = "OK" ]]; then
+  verify_pass "Skill" "superpowers/pm-skills/designer-skills/ui-ux-pro-max 활성 확인"
+else
+  verify_fail "Skill" "핵심 skill 번들 활성 상태 확인 필요"
+fi
+
+PLACEHOLDER_LEFT=$(rg -n -F "{{USER_NAME}}" "$CLAUDE_DIR" "$MEM_DIR" -g "*.md" 2>/dev/null | wc -l | tr -d ' ')
+if [[ "${PLACEHOLDER_LEFT:-0}" -eq 0 ]] && grep -q "$USER_NAME" "$CLAUDE_DIR/CLAUDE.md" && grep -q "$USER_NAME" "$USER_IDENTITY_FILE"; then
+  verify_pass "사용자 이름 호명 테스트" "\"$USER_NAME 누구야?\" 질의에 필요한 이름/호명 컨텍스트 준비 완료"
+else
+  verify_fail "사용자 이름 호명 테스트" "placeholder 잔존 또는 이름 치환 누락 (left=${PLACEHOLDER_LEFT:-0})"
+fi
+
+MCP_LIST_OUTPUT=$(claude mcp list 2>&1 || true)
+if [[ -n "$MCP_LIST_OUTPUT" ]] && echo "$MCP_LIST_OUTPUT" | grep -qiE "codex|github|figma"; then
+  verify_pass "MCP" "claude mcp list에서 codex/github/figma 감지"
+else
+  verify_warn "MCP" "mcp 연결은 계정/토큰 연동 후 수동 확인 필요 (claude mcp list)"
+fi
+
+echo ""
+echo "  결과: PASS=$VERIFY_PASS · WARN=$VERIFY_WARN · FAIL=$VERIFY_FAIL"
+
+# ───────────────────────────────────────
+# 12. 마무리 안내
+# ───────────────────────────────────────
+log "[11/11] 설치 완료"
 
 # 임시 clone 정리
 if [[ -n "${CLEANUP_TEMP:-}" ]]; then
