@@ -1,4 +1,4 @@
-# INSTALL — JARVIS-OS v1.0 설치 가이드
+# INSTALL — JARVIS-OS v1.2 설치 가이드
 
 > 제작: Ben(이치훈) · GitHub @jaechi-factory
 
@@ -120,10 +120,11 @@ claude
 ## 동작 확인
 
 ### `/check-rules` — 룰 정합성 확인
-모든 항목이 ✅ PASS 나오면 정상:
+대부분 ✅ PASS, WARN 1건 (rules/common 큰 파일 2개)이면 정상:
 ```
-PASS=16 · WARN=0 · FAIL=0
+PASS=15 · WARN=1 · FAIL=0
 ```
+WARN 사유: `rules/common/codex-delegation.md` 6.4KB + `pm-skills-routing.md` 9KB. 콘텐츠 무게 합당해서 의도된 상태.
 
 ### 자동 푸터 확인
 모든 응답 끝에 다음 같은 블록이 자동 출력되면 정상:

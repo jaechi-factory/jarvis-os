@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# JARVIS-OS v1.0 — 자동 설치 스크립트
+# JARVIS-OS v1.2 — 자동 설치 스크립트
 # https://github.com/jaechi-factory/jarvis-os
 #
 # 사용법 (받는 사람):
@@ -124,7 +124,7 @@ verify_fail() {
 # ───────────────────────────────────────
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "   JARVIS-OS v1.0 자동 설치"
+echo "   JARVIS-OS v1.2 자동 설치"
 echo "   제작: Ben(이치훈) · GitHub @jaechi-factory"
 echo "   Repo: github.com/jaechi-factory/jarvis-os"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -454,7 +454,7 @@ fi
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  ✅ JARVIS-OS v1.0 설치 완료"
+echo "  ✅ JARVIS-OS v1.2 설치 완료"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 echo "▶ 자동 설치된 영역"

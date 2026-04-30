@@ -4,6 +4,59 @@
 # OS
 .DS_Store
 Thumbs.db
+.AppleDouble
+.LSOverride
 
 # 개인 백업 (setup.sh가 만드는 ~/.claude.backup-*)
 *.backup-*
+*.bak
+*.orig
+
+# 환경 변수·시크릿 (절대 commit 금지)
+.env
+.env.*
+!.env.example
+!.env.template
+*.key
+*.pem
+*.p12
+*.crt
+secrets/
+.secrets/
+
+# 런타임 상태 (사용자 개인 데이터)
+.claude/
+.claude.backup-*
+audit/
+state/
+*.jsonl
+*.log
+*-debug.log
+.last-violation
+.last-prompt
+.last-stop-*
+
+# Node·Python·빌드 산출물
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+dist/
+build/
+.next/
+out/
+.cache/
+.turbo/
+
+# IDE·Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 임시·스크래치
+.tmp/
+tmp/
+scratch/
+.scratch/
