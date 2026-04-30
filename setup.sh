@@ -259,7 +259,9 @@ ok "  prompts/ $(find "$CLAUDE_DIR/prompts" -type f -name '*.md' | wc -l | tr -d
 log "[6/11] 메모리 템플릿 복사"
 
 # slug 계산: HOME path → claude-mem 패턴
+# /Users/john.smith → -Users-john-smith (점→대시 치환은 check-rules.sh와 정합성 의무)
 SLUG="${HOME//\//-}"
+SLUG="${SLUG//./-}"
 MEM_DIR="$CLAUDE_DIR/projects/$SLUG/memory"
 mkdir -p "$MEM_DIR/global" "$MEM_DIR/projects"
 ok "  메모리 디렉토리: $MEM_DIR"
