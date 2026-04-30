@@ -1,7 +1,8 @@
-# JARVIS-OS v1.0
+# JARVIS-OS v1.1
 
 > 제작: Ben(이치훈) · GitHub @jaechi-factory
 > **Claude Code를 자비스처럼 똑똑하게 굴리는 운영체계**
+> v1.1 (2026-04-30): 자가 회복 메커니즘 + 디렉터·L3 휘하 스킬 자동 발화 매핑 + Codex hook 통합
 
 영화 아이언맨의 자비스가 토니 스타크의 모든 걸 알아서 처리하듯, JARVIS-OS는 Claude Code 안에서 **5단 조직(Founder → CEO 자비스 → C-Level → Leader → Worker)** + **자동 검증** + **자가 치유**가 굴러가는 시스템이에요.
 
@@ -22,6 +23,8 @@
 | **Audit Log** | 모든 도구 호출 자동 기록 (거짓 보고 잡힘) |
 | **ABSOLUTE 소통** | 정보 양질 + 누구나 이해 + 존중 구어체 |
 | **Codex 위임 강제** | 코드 수정은 Codex가 / 판단·리뷰는 Claude가 |
+| **🆕 자가 회복 메커니즘** | 디렉터 누락 위반 감지 → 다음 턴 자비스에게 자동 회복 알림 inject (`hooks/violation-check.sh` + `violation-inject.sh`) |
+| **🆕 휘하 스킬 자동 발화 매핑** | 디렉터 6명 + L3 32명 정의에 키워드→스킬 매핑 분산 (총 약 340개 매핑). 디렉터 호출 시 자기 휘하 스킬 자동 후보로 |
 | **플러그인 26개** | superpowers / pm-skills / designer-skills 등 자동 설치 |
 
 ## 🚀 온보딩 (30초 시작)
@@ -110,6 +113,33 @@ Enter your name:
 ## 📜 라이선스
 
 공개 전환 준비 중. 현재는 저장소 정책에 따라 사용해 주세요.
+
+## 🔄 v1.1 변경 사항 (2026-04-30)
+
+### 🆕 추가
+- **자가 회복 메커니즘** (`hooks/violation-check.sh` + `hooks/violation-inject.sh`)
+  - Stop hook이 직전 턴 디렉터 키워드 매칭 + Agent 호출 0건 감지 → `.last-violation` 기록
+  - 다음 턴 시작 시 UserPromptSubmit hook이 자비스에게 회복 알림 inject
+  - 자비스가 알림 보고 자동으로 디렉터 호출하거나 `🧭 L1 (direct · 사유)` 명시
+  - 직전 턴 응답에 `🧭 L1 (direct` 라벨 있으면 면제 (false positive 방지)
+- **디렉터 6명 휘하 스킬 매핑** (`agents/<director>.md`의 "🎯 휘하 스킬 자동 발화 후보" 섹션)
+- **L3 32명 자기 핵심 스킬 매핑** (`agents/<L3>.md`의 "🎯 핵심 사용 스킬" 섹션)
+- **AGENTS_SYSTEM 트리거 표 STRICT 강화** + direct 면제 명시 + 자비스 OS 자체 작업 면제
+
+### 🔧 정비
+- **Codex hook 7개 → 3개 통합** (`codex-gate-pre/post/summary.sh`)
+  - 옛 5개(`codex-declaration-check`, `codex-log`, `codex-size-check`, `codex-statusline`, `codex-turn-reset`)는 `hooks/_archive_codex/`로 이동
+  - 통합 hook은 비가역 차단 + 고위험 경로 감지 + Codex 적대적 리뷰 강제
+- **`check-rules.sh` SLUG 점→대시 치환 패치** (예: `/Users/jane.smith` → `-Users-jane-smith`)
+
+### 📊 정합성
+- `/check-rules`: PASS 15 / WARN 1 / FAIL 0 (총 16 검사)
+- 자동 로드 사이즈: ~53KB (디렉터·L3 매핑은 호출 시만 로드)
+
+### 🔄 v1.0 → v1.1 업그레이드
+이미 v1.0 설치됐다면 `setup.sh` 다시 실행 시 자동 갱신 (기존 `~/.claude`는 `~/.claude.backup-YYYYMMDD-HHMMSS`로 백업).
+
+---
 
 ## 🤝 만든이
 

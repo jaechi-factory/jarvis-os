@@ -23,6 +23,28 @@ model: sonnet
 - Agent 툴에서 `subagent_type` 지정 호출 가능
 - 소규모 변경에는 대량 동원 금지, 대규모 변경/배포 전 점검에서만 사용
 
+## 🎯 휘하 스킬 자동 발화 후보
+
+L3 호출 시 함께 후보로 올리거나 직접 호출할 수 있는 핵심 L4 스킬. 카탈로그 v1.4 참조.
+
+| 키워드 (한/영) | 1순위 스킬 |
+|---|---|
+| 다관점 코드 리뷰 (대규모 PR) | `compound-engineering:ce-review` (tiered persona agents) |
+| TS/JS 코드 리뷰 | `typescript-reviewer` 에이전트 1순위 |
+| 일반 코드 리뷰 | `code-reviewer` 에이전트 (디폴트) |
+| 디버깅·silent failure | `silent-failure-hunter` 에이전트 1순위 |
+| 보안 리뷰, vulnerability | `security-reviewer` 에이전트 1순위 |
+| pre-mortem, 사전 부검, 리스크 분석 | `pm-execution:pre-mortem` |
+| 테스트 시나리오, happy path, edge case | `pm-execution:test-scenarios` + `prototyping-testing:test-scenario` |
+| 접근성 테스트 계획 | `prototyping-testing:accessibility-test-plan` + `design-systems:accessibility-audit` |
+| 클릭/내비게이션 테스트 | `prototyping-testing:click-test-plan` |
+| 사용성 테스트 계획 | `prototyping-testing:test-plan` |
+| A/B 테스트 설계 | `prototyping-testing:a-b-test-design` (실험 분석은 `pm-data-analytics:ab-test-analysis`) |
+| E2E 자동화 | `e2e-runner` 에이전트 + `playwright` MCP |
+| 브라우저 테스트 | `compound-engineering:test-browser` |
+| 코드 리뷰 받기 (정중 요청형) | `superpowers:receiving-code-review` |
+| 검증 전 완성 체크 | `superpowers:verification-before-completion` |
+
 ## 호출 트리거
 
 - "배포 전"

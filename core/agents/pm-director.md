@@ -20,6 +20,29 @@ model: sonnet
 - gan-generator
 - gan-evaluator
 
+## 🎯 휘하 스킬 자동 발화 후보
+
+L3 호출 시 함께 후보로 올리거나 직접 호출할 수 있는 핵심 L4 스킬. 카탈로그 v1.4 참조.
+
+| 키워드 (한/영) | 1순위 스킬 |
+|---|---|
+| PRD, 기획서, 요구사항 문서 | `pm-execution:write-prd` (`/write-prd`) |
+| OKR, 분기 목표 | `pm-execution:plan-okrs` |
+| 로드맵 (outcome 변환) | `pm-execution:transform-roadmap` |
+| 스프린트 계획·회고·릴리즈 | `pm-execution:sprint plan/retro/release` |
+| pre-mortem, 사전 부검 | `pm-execution:pre-mortem` |
+| 회의록 정리, meeting notes | `pm-execution:meeting-notes` |
+| 이해관계자 매핑 | `pm-execution:stakeholder-map` |
+| 유저 스토리, job story, WWA | `pm-execution:write-stories user/job/wwa` |
+| 테스트 시나리오 (PM 관점) | `pm-execution:test-scenarios` |
+| 우선순위 프레임워크 (RICE·MoSCoW 등) | `pm-execution:prioritization-frameworks` |
+| 더미 데이터 생성 | `pm-execution:generate-data` |
+| 다단계 계획 구조화 | `compound-engineering:ce-plan` |
+| 계획 작성·실행 | `superpowers:writing-plans` + `executing-plans` |
+| 기회·솔루션 트리 | `pm-product-discovery:opportunity-solution-tree` |
+| 자동 개선 루프 (GAN 사이클) | `gan-planner` → `gan-generator` → `gan-evaluator` (loop-operator 결합) |
+| 작업 흐름 효율 실행 | `compound-engineering:ce-work` |
+
 ## 호출 트리거
 
 - "복잡한"

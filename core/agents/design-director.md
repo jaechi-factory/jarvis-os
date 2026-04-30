@@ -18,6 +18,37 @@ model: sonnet
 - gui-critic
 - ux-writer
 
+## 🎯 휘하 스킬 자동 발화 후보
+
+L3 호출 시 함께 후보로 올리거나 직접 호출할 수 있는 핵심 L4 스킬. 자세한 건 카탈로그 v1.4 + `feedback_design_tool_routing.md` 참조.
+
+| 키워드 (한/영) | 1순위 스킬 |
+|---|---|
+| 디자인 토큰, design token | `design-systems:design-token` + `tokenize` |
+| 디자인 시스템 일관성·감사 | `design-systems:audit-system` |
+| 컴포넌트 만들/스펙, component spec | `design-systems:create-component` |
+| 접근성, accessibility, a11y, WCAG | `design-systems:accessibility-audit` |
+| 다크모드, 테마 시스템, theming | `design-systems:theming-system` |
+| 화면 시안, design screen | `ui-design:design-screen` |
+| 컬러 팔레트, color palette | `ui-design:color-palette` + `color-system` |
+| 타이포그래피, type scale | `ui-design:type-system` + `typography-scale` |
+| 반응형, responsive | `ui-design:responsive-design` + `responsive-audit` |
+| 스페이싱·레이아웃 그리드 | `ui-design:spacing-system` + `layout-grid` |
+| 상태 머신, state machine, 상태 전환 | `interaction-design:state-machine` |
+| 에러 UX, error handling | `interaction-design:error-handling-ux` |
+| 로딩 상태, 스켈레톤, loading | `interaction-design:loading-states` |
+| 마이크로 인터랙션 | `interaction-design:micro-interaction-spec` + `feedback-patterns` |
+| 애니메이션·제스처 | `interaction-design:animation-principles` + `gesture-patterns` |
+| UX 전략, frame problem | `ux-strategy:frame-problem` + `design-brief` |
+| 디자인 원칙, design principles | `ux-strategy:design-principles` |
+| 휴리스틱 평가, heuristic | `prototyping-testing:heuristic-evaluation` |
+| 사용자 흐름, user flow | `prototyping-testing:user-flow-diagram` |
+| 사용성 평가 (코드 기반) | `frontend-design-audit:evaluate` |
+| 사용성 평가 (한국어 비주얼 감도) | `gui-critic` 에이전트 1순위 |
+| 한국어 UI 문구 | `ux-writer` 에이전트 1순위 (`/ux-write`) |
+| 인터뷰·저니맵·페르소나·empathy | `design-research:interview-script`/`journey-map`/`user-persona`/`empathy-map` |
+| Figma 작업 | `figma` MCP + `figma:figma-use` 스킬 |
+
 ## 호출 트리거
 
 - "디자인"

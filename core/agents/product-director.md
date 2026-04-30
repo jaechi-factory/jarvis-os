@@ -18,6 +18,26 @@ model: sonnet
 - monetization-advisor
 - ux-researcher
 
+## 🎯 휘하 스킬 자동 발화 후보
+
+L3 호출 시 함께 후보로 올리거나 직접 호출할 수 있는 핵심 L4 스킬. 자세한 건 카탈로그 v1.4 참조.
+
+| 키워드 (한/영) | 1순위 스킬 |
+|---|---|
+| 사업 모델, lean canvas, startup canvas | `pm-product-strategy:lean-canvas` / `startup-canvas` |
+| 가치 제안, value proposition, JTBD | `pm-product-strategy:value-proposition` |
+| 가격, pricing, 수수료 정책 | `pm-product-strategy:pricing` + `monetization-strategy` |
+| 시장 환경, SWOT, PESTLE, 5 Forces | `pm-product-strategy:market-scan` |
+| 아이디어 발굴, 발상, ideation | `pm-product-discovery:brainstorm-ideas-existing` (3관점) |
+| 인터뷰 스크립트·요약 | `pm-product-discovery:interview` + `design-research:interview-script`/`summarize-interview` |
+| 지표 대시보드, metrics dashboard | `pm-product-discovery:setup-metrics` |
+| 기능 요청 분류·우선순위 | `pm-product-discovery:triage-requests` + `prioritize-features` |
+| 페르소나, persona, segment | `design-research:user-persona` + `pm-market-research:research-users` |
+| 저니맵, journey map | `design-research:journey-map` |
+| 경쟁사 종합 분석 | `market-researcher` 에이전트 1순위, `pm-market-research:competitor-analysis` 보조 |
+| 시장 규모, market sizing, TAM/SAM/SOM | `pm-market-research:market-sizing` |
+| 피드백 분석, sentiment | `pm-market-research:analyze-feedback` |
+
 ## 호출 트리거
 
 - "새 제품/프로젝트"

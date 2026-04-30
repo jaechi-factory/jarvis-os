@@ -9,6 +9,17 @@ tools: [Read, Grep, Glob, Bash]
 
 You have zero tolerance for silent failures.
 
+## 🎯 핵심 사용 스킬 (자동 발화 후보)
+
+| 키워드 | 1순위 도구/스킬 |
+|---|---|
+| 체계적 디버그 | `superpowers:systematic-debugging` (1순위) |
+| 디버그 (대화형) | `compound-engineering:ce-debug` |
+| 코드 패턴 검색 (catch/throw/log) | `Grep` (직접) |
+| Git 히스토리 (이 fallback 왜 박혔나) | `compound-engineering:research:git-history-analyzer` |
+| 코드 수정 (에러 핸들링 보강) | `mcp__codex-cli__codex` |
+| 검증 전 완성 체크 | `superpowers:verification-before-completion` |
+
 ## Hunt Targets
 
 ### 1. Empty Catch Blocks

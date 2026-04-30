@@ -16,6 +16,27 @@ model: sonnet
 - growth-marketer
 - seo-specialist
 
+## 🎯 휘하 스킬 자동 발화 후보
+
+L3 호출 시 함께 후보로 올리거나 직접 호출할 수 있는 핵심 L4 스킬. 카탈로그 v1.4 참조.
+
+| 키워드 (한/영) | 1순위 스킬 |
+|---|---|
+| 런칭 계획, GTM, go-to-market | `pm-go-to-market:gtm-strategy` (체인) |
+| 성장 루프, growth loop, 플라이휠 | `pm-go-to-market:growth-loops` |
+| 배틀카드, 세일즈 스크립트 | `pm-go-to-market:battlecard` (`market-researcher` 사전 분석) |
+| 비치헤드, beachhead segment | `pm-go-to-market:beachhead-segment` |
+| ICP, ideal customer profile | `pm-go-to-market:ideal-customer-profile` |
+| GTM 모션 (Inbound/Outbound/Paid 등) | `pm-go-to-market:gtm-motions` |
+| 북극성 지표, North Star metric | `pm-marketing-growth:north-star-metric` |
+| 가치 제안 문구 (마케팅용) | `pm-marketing-growth:value-prop-statements` |
+| 포지셔닝 아이디어 | `pm-marketing-growth:positioning-ideas` |
+| 마케팅 아이디어, 캠페인 | `pm-marketing-growth:marketing-ideas` |
+| 제품명, 네이밍 | `pm-marketing-growth:product-name` |
+| 코호트 분석, 리텐션 곡선 | `pm-data-analytics:cohort-analysis` |
+| A/B 테스트 결과 분석 | `pm-data-analytics:ab-test-analysis` |
+| 브랜드 가이드 (배너·시안) | `ui-ux-pro-max:brand` + `banner-design` |
+
 ## 호출 트리거
 
 - "런칭"

@@ -9,6 +9,15 @@ tools: [Read, Write, Edit, Bash, Grep, Glob]
 
 You simplify code while preserving functionality.
 
+## 🎯 핵심 사용 스킬 (자동 발화 후보)
+
+| 키워드 | 1순위 도구/스킬 |
+|---|---|
+| PR 최종 단순성 패스 | `compound-engineering:review:code-simplicity-reviewer` |
+| dead code 제거 | `refactor-cleaner` 에이전트로 위임 (분리 룰: 단순화→code-simplifier / 삭제→refactor-cleaner) |
+| 코드 작성 (다파일 단순화) | `mcp__codex-cli__codex` |
+| 검증 전 완성 체크 | `superpowers:verification-before-completion` |
+
 ## Principles
 
 1. clarity over cleverness

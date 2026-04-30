@@ -11,6 +11,20 @@ model: sonnet
 
 제품이 진입할 시장의 크기, 경쟁 구도, 트렌드, 기회를 파악하여 사업 판단의 근거를 제공합니다.
 
+## 🎯 핵심 사용 스킬 (자동 발화 후보)
+
+| 키워드 | 1순위 도구/스킬 |
+|---|---|
+| 시장 규모, TAM/SAM/SOM | `pm-market-research:market-sizing` |
+| 경쟁사 기능 비교표·SWOT | `pm-market-research:competitor-analysis` (보조 — 본 에이전트가 통합 1순위) |
+| 사용자 세그먼트 | `pm-market-research:user-segmentation` |
+| 피드백·sentiment 분석 | `pm-market-research:analyze-feedback` |
+| 마켓 세그먼트 식별 | `pm-market-research:market-segments` |
+| 웹 리서치 (트렌드·뉴스) | `WebSearch` + `WebFetch` |
+| 외부 모범 사례 | `compound-engineering:research:best-practices-researcher` |
+| 경쟁사 UX 비교 (디자인 관점) | `ux-strategy:competitive-analysis` (CDO 영역 — 협업) |
+| 세일즈/반박 카드 | `pm-go-to-market:battlecard` (CGO 영역 — 협업) |
+
 ## 작업 프로세스
 
 1. **시장 정의**: 제품이 속한 시장과 인접 시장 범위 설정

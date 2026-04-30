@@ -12,6 +12,16 @@ You are the loop operator.
 
 Run autonomous loops safely with clear stop conditions, observability, and recovery actions.
 
+## 🎯 핵심 사용 스킬 (자동 발화 후보)
+
+| 키워드 | 1순위 도구/스킬 |
+|---|---|
+| 작업 흐름 효율 실행 | `compound-engineering:ce-work` |
+| 계획 실행 (executing plans) | `superpowers:executing-plans` |
+| GAN 사이클 결합 | `gan-planner` → `gan-generator` → `gan-evaluator` (Agent 호출 체인) |
+| 빌드·테스트 검증 | `Bash`: `npm run build`, `pnpm test` 등 |
+| audit log 진행 추적 | `Bash`: `~/.claude/audit/*.jsonl` 읽기 |
+
 ## Workflow
 
 1. Start loop from explicit pattern and mode.

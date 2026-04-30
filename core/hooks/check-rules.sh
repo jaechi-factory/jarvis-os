@@ -14,7 +14,9 @@
 cd "$HOME/.claude"
 
 # Dynamic slug from HOME path (e.g. /Users/john → -Users-john)
+# Note: Claude Code 슬러그 규칙은 / → - 뿐만 아니라 . → -도 함께 치환 (예: /Users/jane.smith → -Users-jane-smith)
 SLUG="${HOME//\//-}"
+SLUG="${SLUG//./-}"
 MEM_GLOBAL="$HOME/.claude/projects/$SLUG/memory/global"
 MEM_INDEX="$HOME/.claude/projects/$SLUG/memory/MEMORY.md"
 
@@ -154,7 +156,7 @@ fi
 # ── 9. MEMORY.md 1줄 룰 (200자) ──
 LINE_VIOL=$(python3 -c "
 cnt = 0
-with open(os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-'), 'memory', 'MEMORY.md')) as f:
+with open(os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-').replace('.', '-'), 'memory', 'MEMORY.md')) as f:
     for line in f:
         if line.startswith('- ') and len(line) > 200:
             cnt += 1
@@ -191,8 +193,8 @@ import re, collections
 files = [
   '$HOME/.claude/AGENTS_SYSTEM.md',
   '$HOME/.claude/AGENTS_REFERENCE.md',
-  '$HOME/.claude/projects/' + os.environ['HOME'].replace('/', '-') + '/memory/MEMORY.md',
-  os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-'), 'memory', 'global', 'reference_official_tools_integration.md'),
+  '$HOME/.claude/projects/' + os.environ['HOME'].replace('/', '-').replace('.', '-') + '/memory/MEMORY.md',
+  os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-').replace('.', '-'), 'memory', 'global', 'reference_official_tools_integration.md'),
 ]
 keywords = collections.Counter()
 key_pat = re.compile(r'(?:^|[\s,/|])([가-힣a-z]{2,12})(?=[\s,/|]|$)')
@@ -232,9 +234,9 @@ fi
 FM_MISSING=$(python3 -c "
 import os
 cnt = 0
-for f in os.listdir(os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-'), 'memory', 'global')):
+for f in os.listdir(os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-').replace('.', '-'), 'memory', 'global')):
     if not f.endswith('.md'): continue
-    path = os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-'), 'memory', 'global', f)
+    path = os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-').replace('.', '-'), 'memory', 'global', f)
     try:
         with open(path) as fp:
             head = fp.read(500)
@@ -300,9 +302,9 @@ fi
 # ── 15. global/projects 고아 파일 검사 (인덱스 누락) v2 신규 ──
 ORPHAN_REPORT=$(python3 -c "
 import os
-gdir = os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-'), 'memory', 'global')
-pdir = os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-'), 'memory', 'projects')
-mem = open('$HOME/.claude/projects/' + os.environ['HOME'].replace('/', '-') + '/memory/MEMORY.md').read()
+gdir = os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-').replace('.', '-'), 'memory', 'global')
+pdir = os.path.join(os.environ['HOME'], '.claude', 'projects', os.environ['HOME'].replace('/', '-').replace('.', '-'), 'memory', 'projects')
+mem = open('$HOME/.claude/projects/' + os.environ['HOME'].replace('/', '-').replace('.', '-') + '/memory/MEMORY.md').read()
 g_orphan = [f for f in os.listdir(gdir) if f.endswith('.md') and f not in mem]
 p_orphan = [f for f in os.listdir(pdir) if f.endswith('.md') and f not in mem]
 total = len(g_orphan) + len(p_orphan)

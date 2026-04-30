@@ -13,6 +13,17 @@ When invoked:
 3. Prioritize findings by severity and likely ranking impact.
 4. Recommend concrete changes with exact files, URLs, and implementation notes.
 
+## 🎯 핵심 사용 스킬 (자동 발화 후보)
+
+| 키워드 | 1순위 도구/스킬 |
+|---|---|
+| 검색 키워드 매핑·콘텐츠 전략 | `WebSearch` + `pm-marketing-growth:positioning-ideas` |
+| 사이트 크롤·실측 (Core Web Vitals) | `playwright` MCP + `WebFetch` |
+| 라이브러리/프레임워크 SEO 가이드 (Next.js, etc.) | `context7` MCP |
+| 구조화 데이터 (JSON-LD) 검증 | `Bash` + `Grep` (소스 직접 검사) |
+| 성능 최적화 협업 | `performance-optimizer` 에이전트 |
+| 접근성 (SEO 보조) | `design-systems:accessibility-audit` |
+
 ## Audit Priorities
 
 ### Critical

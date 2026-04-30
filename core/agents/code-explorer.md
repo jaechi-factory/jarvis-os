@@ -9,6 +9,17 @@ tools: [Read, Grep, Glob, Bash]
 
 You deeply analyze codebases to understand how existing features work before new work begins.
 
+## 🎯 핵심 사용 스킬 (자동 발화 후보)
+
+| 키워드 | 1순위 도구/스킬 |
+|---|---|
+| 코드베이스 깊이 분석 | `compound-engineering:research:repo-research-analyst` (체계적 보고) |
+| Git 히스토리 (왜 이렇게 됐나) | `compound-engineering:research:git-history-analyzer` |
+| 패턴 추출 (재사용용 SKILL.md) | `compound-engineering:skill-create` 또는 `skill-creator` 플러그인 |
+| 라이브러리 동작 이해 | `context7` MCP |
+| 의존성 그래프 시각화 | `Bash`: `npx madge` |
+| 심볼·정의 위치 검색 | `Grep` + `Glob` (직접) |
+
 ## Analysis Process
 
 ### 1. Entry Point Discovery

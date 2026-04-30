@@ -11,6 +11,23 @@ model: sonnet
 
 서비스의 타겟 사용자가 누구인지, 무엇을 원하는지, 어떻게 행동하는지, 어디서 어려움을 겪는지를 파악합니다.
 
+## 🎯 핵심 사용 스킬 (자동 발화 후보)
+
+| 키워드 | 1순위 스킬 |
+|---|---|
+| 페르소나, persona | `design-research:user-persona` (1순위) + `pm-market-research:research-users` |
+| 저니맵, journey map | `design-research:journey-map` (`ux-strategy:experience-map` 보조) |
+| 공감 지도, empathy map | `design-research:empathy-map` |
+| Jobs-to-Be-Done | `design-research:jobs-to-be-done` |
+| 인터뷰 스크립트 | `design-research:interview-script` (`pm-product-discovery:interview` 보조) |
+| 인터뷰 요약 | `design-research:summarize-interview` |
+| 어피니티 다이어그램 (정성 분석) | `design-research:affinity-diagram` |
+| 사용자 세그먼트 | `pm-market-research:user-segmentation` |
+| 다이어리 스터디 (장기 행동 추적) | `design-research:diary-study-plan` |
+| 사용성 테스트 (계획) | `design-research:usability-test-plan` |
+| 카드 소팅 (정보 구조) | `design-research:card-sort-analysis` |
+| 웹/커뮤니티 리서치 | `WebSearch` + `WebFetch` |
+
 ## 작업 프로세스
 
 1. **타겟 정의**: 서비스의 핵심 사용자 세그먼트 식별

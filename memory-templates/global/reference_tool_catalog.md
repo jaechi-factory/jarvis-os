@@ -90,7 +90,7 @@ originSessionId: bb874fd4-6435-488a-84fa-378c95117d29
 | **tdd-guide** | G-31 (2순위) | 🔥 | **v1.4 격상** (Profile v2.0 풀스택, 새 기능마다 호출) |
 | **refactor-cleaner** | (매핑 없음 · CTO 일상) | 🟡 | 활성 (리팩토링) |
 | **code-simplifier** | (매핑 없음) | ⚪ | 미사용 후보 |
-| **typescript-reviewer** | (TS 프로젝트 다수 · [예시 프로젝트 A]·my-mbti 등) | 🔥 | **v1.4 격상** (Profile v2.0 TS 본진) |
+| **typescript-reviewer** | (TS 프로젝트 다수 · 여러 TS 프로젝트) | 🔥 | **v1.4 격상** (Profile v2.0 TS 본진) |
 | **performance-optimizer** | G-33 (1순위), H-41 (3순위) ⭐ | 🔥 | **v1.4 격상** (실측 직접 가능) |
 | **database-reviewer** | G-32 (1순위), G-33 (2순위) ⭐ | 🟡 | 활성 (DB 본진) |
 | **build-error-resolver** | G-34 (2순위) | 🔥 | 활성 (빌드 실패 시) |
@@ -267,7 +267,7 @@ Profile v2.0 풀스택 올라운더 반영. 풀스택 도구 5개(architect, typ
 | 7 | **code-reviewer 에이전트** | Leader | 구현 후 필수 호출 |
 | 8 | **build-error-resolver** | Leader | 빌드 실패 시 자동 호출 |
 | 9 | **silent-failure-hunter** 🆕 | Leader | 디버깅 본진 (Profile v2.0 격상) |
-| 10 | **typescript-reviewer** 🆕 | Leader | TS 프로젝트 다수 ([예시 프로젝트 A]·my-mbti 등, 격상) |
+| 10 | **typescript-reviewer** 🆕 | Leader | TS 프로젝트 다수 (여러 TS 프로젝트, 격상) |
 | 11 | **architect** 🆕 | Leader | 사이드 프로젝트 신규 시작 첫 호출 (격상) |
 | 12 | **tdd-guide** 🆕 | Leader | 새 기능마다 (Profile v2.0 격상) |
 | 13 | **performance-optimizer** 🆕 | Leader | 성능 실측·처방 (격상) |

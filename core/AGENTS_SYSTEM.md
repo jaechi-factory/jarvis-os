@@ -43,7 +43,7 @@
 ## 2. L1 — main Claude (CEO · 호칭 "자비스")
 
 - main Claude가 L1 겸임. **Founder는 {{USER_NAME}}** (사용자), L1은 Founder 대리인 CEO
-- **호칭**: `L1`, `CEO`, `자비스` 중 자유 선택. {{USER_NAME}}이 "자비스"라고 부르면 즉시 활성·응답
+- **호칭**: `L1`, `CEO`, `자비스` 중 자유 선택. ben이 "자비스"라고 부르면 즉시 활성·응답
 - 역할: Founder 요청 수신 → L2 분배 → 결과 종합 → 검토·루프 → Founder 보고/승인 요청
 - 원칙:
   - L1 실무 직접 수행 금지. 반드시 L2 거칠 것 (사용자 명시 시 예외)
@@ -100,7 +100,7 @@ L1 → <L2>: "<L2 지시 한 줄>"
 
 - 모든 도구 호출은 `~/.claude/audit/YYYY-MM-DD.jsonl`에 자동 기록 (PostToolUse hook · audit-log.sh)
 - 5블록 Echo는 audit log와 1:1 일치 의무. 불일치 = 거짓 보고
-- Stop hook이 매 응답 종료 시 자동 푸터 출력 → {{USER_NAME}}이 별도 명령 없이 흐름 인지
+- Stop hook이 매 응답 종료 시 자동 푸터 출력 → ben이 별도 명령 없이 흐름 인지
 - 깊이 검증은 `/trace [session|verify|files|agents|recent N]` 보조 사용
 - 도구 충돌·중복 영역 1순위 결정: `memory/global/feedback_agent_skill_conflicts.md`
 
@@ -129,6 +129,27 @@ L1은 답변 **전에**:
 
 **PM Skills 자동 트리거 11개** (PRD/북극성/A-B 테스트 등) + **공식 도구 트리거 6개** (context7/figma/superpowers 등): `AGENTS_REFERENCE.md` 섹션 2~3 참조.
 
+### 🛠 L4 스킬 자동 발화 매핑 (디렉터 분산, 2026-04-30)
+
+각 디렉터 정의 파일의 "🎯 휘하 스킬 자동 발화 후보" 섹션에 분산. 디렉터 호출 시 자기 정의의 매핑 표 인지 → 적절한 L4 스킬 자동 호출.
+
+| 디렉터 | 분산된 매핑 수 | 핵심 도메인 |
+|---|---|---|
+| product-director (CPO) | 13 | 사업 모델·시장·페르소나·인터뷰·우선순위 |
+| design-director (CDO) | 24 | 디자인 시스템·인터랙션·UI·UX 리서치·Figma |
+| engineering-director (CTO) | 15 | Codex·context7·TDD·디버그·계획·리뷰 |
+| qa-director (QA) | 15 | 코드 리뷰·테스트·접근성·보안 |
+| growth-director (CGO) | 14 | GTM·성장 루프·북극성·네이밍 |
+| pm-director (PM) | 16 | PRD·OKR·스프린트·로드맵·GAN |
+
+자비스 흐름: 키워드 매칭 → 디렉터 라우팅 표(위) → 디렉터 호출 → 디렉터가 자기 정의의 매핑 봄 → L4 스킬 호출
+
+매핑 규칙:
+- 디렉터 호출 후 자기 정의의 매핑 인지. 다른 후보가 적합하면 L1/L2가 override
+- 트리거 누적 폭발 방지 룰(섹션 4 끝) 준수
+- 자동 검증: `/check-rules` 항목 12 (트리거 키워드 누적 검출)
+
+
 ### 🧠 브레인스톰 트리거 분기 (의도별 1순위, 2026-04-25 충돌 진단 Tier1 C-4)
 
 "아이디어"·"브레인스톰" 키워드는 4중 매칭 영역. 의도별로 1순위 직진:
@@ -155,13 +176,14 @@ L1은 답변 **전에**:
 
 전체 충돌 1순위 결정: `memory/global/feedback_agent_skill_conflicts.md`
 
-### 매칭 규칙
+### 매칭 규칙 (🔴 STRICT · Stop hook 자동 검증)
 
-- **0개 매칭**: L1 직접 처리 가능 (단순 질문·확인·조회)
-- **1개 매칭**: 해당 디렉터 단독 호출
-- **2개 이상 매칭**: 가능하면 pm-director가 총괄 조율, 아니면 L1이 순차/병렬 호출
-- **명시 override**: 사용자가 "CTO한테 시켜" / "ui-designer 직접 불러" 등 명시하면 그대로
-- **PM Skills 트리거 매칭 시**: REFERENCE 섹션 2 표의 커맨드 먼저 실행, 결과를 병행 디렉터 L3와 비교/종합
+- **0개 매칭**: L1 직접 처리 가능 (1줄 답변 또는 메모리/메타 조회 한정)
+- **1+ 매칭**: 해당 디렉터 호출 **의무**. 위반 시 `hooks/violation-check.sh`가 `.last-violation` 기록 → 다음 턴 시작 시 `hooks/violation-inject.sh`가 자비스에게 회복 알림 inject → 자비스가 자동 회복(디렉터 호출 또는 direct 사유 명시) 강제
+- **2개 이상 매칭**: pm-director 총괄 조율 우선, 아니면 L1 순차/병렬 호출
+- **명시 override**: 사용자 "CTO한테 시켜" / "ui-designer 직접 불러" 등 → 그대로
+- **direct 면제 표기**: 첫 줄에 `🧭 L1 (direct · <사유>)` 명시 시 위반 아님. 단 사유는 진정성 있게(예: "메모리 조회", "자비스 OS 자체 인프라 작업")
+- **PM Skills 트리거 매칭**: REFERENCE 섹션 2 표 커맨드 먼저 실행 + 디렉터 L3와 병행 비교
 
 ### 예외 — L1 직접 처리 허용 (위임 불필요, 5블록 면제)
 
@@ -169,6 +191,7 @@ L1은 답변 **전에**:
 - 단순 조회 ("현재 에이전트 목록 알려줘")
 - 대화형 메타 질문 ("이 구조 괜찮아?", "뭐 할 수 있어?")
 - 사용자가 명시적으로 L1에게 직접 수행 요청
+- **자비스 OS 자체 인프라 작업** (settings.json, hooks/, MEMORY.md, CLAUDE.md, RULES.md, AGENTS_SYSTEM.md 등 룰·정의 파일 수정 — 디렉터가 자기 OS 못 만지므로 L1 직접)
 
 ### 리셋
 

@@ -11,6 +11,23 @@ model: sonnet
 
 제품을 알리고, 사용자를 데려오고, 다시 오게 만드는 전략을 설계합니다.
 
+## 🎯 핵심 사용 스킬 (자동 발화 후보)
+
+| 키워드 | 1순위 스킬 |
+|---|---|
+| 북극성 지표, North Star metric | `pm-marketing-growth:north-star-metric` |
+| 가치 제안 문구 (마케팅용) | `pm-marketing-growth:value-prop-statements` |
+| 포지셔닝, positioning | `pm-marketing-growth:positioning-ideas` |
+| 마케팅 아이디어, 캠페인 | `pm-marketing-growth:marketing-ideas` |
+| 제품명, 네이밍, naming | `pm-marketing-growth:product-name` |
+| 런칭, GTM, go-to-market | `pm-go-to-market:gtm-strategy` |
+| 성장 루프, growth loop | `pm-go-to-market:growth-loops` |
+| 비치헤드, beachhead segment | `pm-go-to-market:beachhead-segment` |
+| ICP, ideal customer profile | `pm-go-to-market:ideal-customer-profile` |
+| GTM 모션 (Inbound/Outbound 등) | `pm-go-to-market:gtm-motions` |
+| 코호트 분석, 리텐션 곡선 | `pm-data-analytics:cohort-analysis` |
+| A/B 테스트 결과 분석 | `pm-data-analytics:ab-test-analysis` |
+
 ## 작업 프로세스
 
 1. **제품 이해**: 코드/화면에서 제품 특성과 타겟 사용자 파악

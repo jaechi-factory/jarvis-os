@@ -94,7 +94,7 @@ originSessionId: bb874fd4-6435-488a-84fa-378c95117d29
 - **용도**: shadcn/ui 컴포넌트 비주얼 테마 에디터 (코드 NO)
 - **우리와 차이**: ui-ux-pro-max는 시안/팔레트 탐색, tweakcn은 **코드로 떨어진 shadcn 결과물 다듬기**
 - **한국 풀스택 PD 적합도**: 중상 (shadcn 사용 시), 영문 UI지만 비주얼 직관
-- **L1 추천도**: 🟡 후보 보강 — [예시 프로젝트 A]·my-mbti처럼 shadcn 쓰는 프로젝트 한정 가치 있음. 한국 PD 톤 무관.
+- **L1 추천도**: 🟡 후보 보강 — shadcn 쓰는 프로젝트 한정 가치 있음. 한국 PD 톤 무관.
 
 ### 메타 워크플로우
 
@@ -185,7 +185,7 @@ originSessionId: bb874fd4-6435-488a-84fa-378c95117d29
 
 | 도구 | ⭐ | 카테고리 | 근거 | L1 추천 |
 |---|---:|---|---|---|
-| **tweakcn** (jnsahaj) | 9,752 | 디자인 결과물 폴리싱 | shadcn 테마 비주얼 에디터, [예시 프로젝트 A]/my-mbti에 즉시 적용 가능 | 🟡 **shadcn 프로젝트 한정 검토** — 일반 PD 워크플로우 외 |
+| **tweakcn** (jnsahaj) | 9,752 | 디자인 결과물 폴리싱 | shadcn 테마 비주얼 에디터, shadcn 프로젝트에 즉시 적용 가능 | 🟡 **shadcn 프로젝트 한정 검토** — 일반 PD 워크플로우 외 |
 | **awesome-claude-code** (hesreallyhim) | 40,890 | 메타 디렉토리 | 신규 도구 분기별 발굴용 | ✅ **북마크** — 설치 X, 분기 재검증 시 참조 |
 | **alirezarezvani/claude-skills** | 12,646 | 232 스킬 풀 | 광범위 풀, 핫한 것만 추출 | 🟡 **탐색만** — 통째 설치 비추, 1~2개 cherry-pick |
 | **awesome-claude-plugins** (ComposioHQ) | 1,483 | 메타 디렉토리 | 플러그인 큐레이션 | 🟢 북마크 |

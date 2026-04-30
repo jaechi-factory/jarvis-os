@@ -37,7 +37,7 @@
 - [**⚠️ 옵션 제시 시 L1 추천 병기**](global/feedback_option_present_with_l1_pick.md) — 마지막에 "L1 추천: X — 근거: Y"
 - [UX 라이팅 spec 필수 로드](global/feedback_ux_writer_spec.md) — 문구 작업 전 ux-writer.md Read 의무
 - [모바일 시트 체크리스트](global/feedback_mobile_sheet_checklist.md) — safe-area-inset-bottom + 하단 여백 + 스크린샷 의무
-- [프로젝트 작업 전 관련 메모리 필독](global/feedback_project_memory_first.md) — projects/project_<name>_*.md 키워드 매칭 파일 선독 후 작업. 안 읽고 시작 금지 (recipick 광고 사고 후 추가)
+- [프로젝트 작업 전 관련 메모리 필독](global/feedback_project_memory_first.md) — projects/project_<name>_*.md 키워드 매칭 파일 선독 후 작업. 안 읽고 시작 금지 (과거 사고 후 추가)
 - [배포 관련 피드백](global/feedback_deployment.md)
 
 ## Global · 레퍼런스

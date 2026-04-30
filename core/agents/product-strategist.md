@@ -11,6 +11,19 @@ model: sonnet
 
 제품의 존재 이유, 목표 사용자, 핵심 가치, 사업 모델, 성공 기준을 정의합니다.
 
+## 🎯 핵심 사용 스킬 (자동 발화 후보)
+
+| 키워드 | 1순위 스킬 |
+|---|---|
+| 사업 모델, lean canvas, startup canvas | `pm-product-strategy:lean-canvas` / `startup-canvas` |
+| 제품 전략 (9섹션 캔버스) | `pm-product-strategy:product-strategy` |
+| 가치 제안, value proposition, JTBD | `pm-product-strategy:value-proposition` |
+| 제품 비전 | `pm-product-strategy:product-vision` |
+| 시장 환경 분석 (SWOT/PESTLE/5 Forces) | `pm-product-strategy:market-scan` + `swot-analysis` |
+| 가격 전략 | `pm-product-strategy:pricing` (`monetization-advisor`와 협업) |
+| 우선순위 프레임워크 | `pm-execution:prioritization-frameworks` |
+| 시장 데이터 (수치) | `market-researcher` 에이전트로 위임 |
+
 ## 작업 프로세스
 
 1. **현황 파악**: 프로젝트 코드, README, 기존 문서를 읽고 현재 상태 파악

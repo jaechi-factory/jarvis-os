@@ -11,6 +11,19 @@ model: sonnet
 
 제품의 현재 구조에서 수익을 만들 수 있는 지점을 찾고, 사용자 경험을 해치지 않는 수익화 전략을 설계합니다.
 
+## 🎯 핵심 사용 스킬 (자동 발화 후보)
+
+| 키워드 | 1순위 스킬 |
+|---|---|
+| 가격 전략, 프라이싱 | `pm-product-strategy:pricing` |
+| 수익화 전략 (3-5개 모델) | `pm-product-strategy:monetization-strategy` |
+| 비즈니스 모델 (BMC) | `pm-product-strategy:business-model` |
+| Lean Canvas | `pm-product-strategy:lean-canvas` |
+| 가치 제안 (수익화 관점) | `pm-product-strategy:value-proposition` |
+| 코호트·전환 분석 | `pm-data-analytics:cohort-analysis` |
+| A/B 테스트 (가격 실험) | `pm-data-analytics:ab-test-analysis` + `prototyping-testing:a-b-test-design` |
+| 시장 데이터 (가격 비교) | `market-researcher` 에이전트로 위임 |
+
 ## 작업 프로세스
 
 1. **제품 분석**: 코드와 화면 구조를 읽고 사용자 흐름 파악

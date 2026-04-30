@@ -28,6 +28,28 @@ model: sonnet
 - docs-lookup
 - doc-updater
 
+## 🎯 휘하 스킬 자동 발화 후보
+
+L3 호출 시 함께 후보로 올리거나 직접 호출할 수 있는 핵심 L4 스킬. `feedback_codex_delegation_default.md` + 카탈로그 v1.4 참조.
+
+| 키워드 (한/영) | 1순위 스킬/MCP |
+|---|---|
+| 코드 작성·수정 (다파일·반복) | `mcp__codex-cli__codex` (절대 1순위) |
+| 라이브러리·프레임워크 공식 문서 | `context7` MCP (절대 1순위) |
+| TDD, test-driven development | `superpowers:test-driven-development` (planner+tdd-guide와 병행) |
+| 체계적 디버그, systematic debug | `superpowers:systematic-debugging` + `compound-engineering:ce-debug` |
+| 계획 작성·실행, executing plans | `superpowers:writing-plans` + `executing-plans` |
+| 검증 전 완성, verify before complete | `superpowers:verification-before-completion` |
+| 코드 리뷰 받기·하기 (요청형) | `superpowers:requesting-code-review` / `receiving-code-review` |
+| 병렬 서브에이전트 디스패치 | `superpowers:dispatching-parallel-agents` |
+| 멀티스텝 계획 구조화 | `compound-engineering:ce-plan` |
+| 작업 효율 실행 | `compound-engineering:ce-work` |
+| 다관점 코드 리뷰 (대규모 PR) | `compound-engineering:ce-review` |
+| SQL 쿼리 작성 | `pm-data-analytics:sql-queries` (database-reviewer와 협업) |
+| 프론트엔드 디자인 코드 프로토 | `frontend-design:frontend-design` |
+| Git 워크플로 (commit·push·worktree) | `compound-engineering:git-commit` / `git-commit-push-pr` / `git-worktree` |
+| TODO 관리 | `compound-engineering:todo-create` / `todo-resolve` / `todo-triage` |
+
 ## 호출 트리거
 
 - "구현"
