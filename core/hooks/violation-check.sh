@@ -13,6 +13,13 @@ mkdir -p "$state_dir"
 input=$(cat 2>/dev/null || echo "{}")
 transcript_path=$(echo "$input" | python3 -c "import sys,json; print(json.load(sys.stdin).get('transcript_path',''))" 2>/dev/null || echo "")
 
+# 디버그: input 구조 + transcript 추출 결과 dump (실전 작동 확인용 임시)
+debug_log="$HOME/.claude/state/violation-debug.log"
+echo "=== $(date '+%Y-%m-%d %H:%M:%S') ===" >> "$debug_log"
+echo "input keys: $(echo "$input" | python3 -c "import sys,json; print(list(json.load(sys.stdin).keys()))" 2>/dev/null)" >> "$debug_log"
+echo "transcript_path: $transcript_path" >> "$debug_log"
+echo "transcript exists: $([ -f "$transcript_path" ] && echo YES || echo NO)" >> "$debug_log"
+
 prompt_file="${state_dir}/last-prompt.txt"
 [ ! -f "$prompt_file" ] && exit 0
 
@@ -22,36 +29,44 @@ prompt=$(cat "$prompt_file" 2>/dev/null || echo "")
 # direct 라벨 면제 검사 — 자비스가 마지막 응답 첫 부분에 "🧭 L1 (direct" 명시했으면 면제
 direct_label=0
 if [ -n "$transcript_path" ] && [ -f "$transcript_path" ]; then
-    # transcript jsonl에서 마지막 assistant 메시지 추출
-    last_assistant=$(python3 -c "
-import sys, json
+    # heredoc with 'PY' delimiter (no shell expansion) + env var 방식 (audit-log.sh 패턴)
+    export VIOLATION_TRANSCRIPT_PATH="$transcript_path"
+    last_assistant=$(python3 <<'PY' 2>/dev/null
+import os, json
+path = os.environ.get('VIOLATION_TRANSCRIPT_PATH', '')
+last_text = ''
 try:
-    msgs = []
-    with open('$transcript_path') as f:
+    with open(path) as f:
         for line in f:
             try:
-                m = json.loads(line)
-                # 다양한 형식 대응 (role 필드 또는 type 필드)
-                role = m.get('role') or m.get('type') or m.get('message',{}).get('role','')
-                if role == 'assistant':
-                    # content가 string 또는 array
-                    content = m.get('content') or m.get('message',{}).get('content','')
+                d = json.loads(line)
+                if d.get('type') == 'assistant':
+                    msg = d.get('message', {}) or {}
+                    content = msg.get('content', '')
                     if isinstance(content, list):
-                        text = ' '.join(b.get('text','') for b in content if isinstance(b,dict))
+                        text = ' '.join(b.get('text','') for b in content if isinstance(b, dict) and b.get('type') == 'text')
                     else:
                         text = str(content)
-                    msgs.append(text[:2000])
-            except: pass
-    if msgs:
-        # 마지막 assistant 메시지의 첫 500자
-        print(msgs[-1][:500])
-except: pass
-" 2>/dev/null || echo "")
+                    if text:
+                        last_text = text[:1000]
+            except Exception:
+                pass
+except Exception:
+    pass
+print(last_text[:500])
+PY
+)
+    unset VIOLATION_TRANSCRIPT_PATH
 
     # 첫 500자 안에 direct 패턴 있으면 면제
     if echo "$last_assistant" | grep -qE "🧭 L1 \(direct"; then
         direct_label=1
     fi
+
+    # 디버그 dump
+    echo "last_assistant (300자): ${last_assistant:0:300}" >> "$debug_log"
+    echo "direct_label: $direct_label" >> "$debug_log"
+    echo "" >> "$debug_log"
 fi
 
 if [ "$direct_label" = "1" ]; then
