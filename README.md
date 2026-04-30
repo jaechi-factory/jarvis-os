@@ -26,6 +26,7 @@
 | **🆕 자가 회복 메커니즘** | 디렉터 누락 위반 감지 → 다음 턴 자비스에게 자동 회복 알림 inject (`hooks/violation-check.sh` + `violation-inject.sh`) |
 | **🆕 휘하 스킬 자동 발화 매핑** | 디렉터 6명 + L3 32명 정의에 키워드→스킬 매핑 분산 (총 약 340개 매핑). 디렉터 호출 시 자기 휘하 스킬 자동 후보로 |
 | **🆕 Codex 위임 정책 3단계** | `strict` (기본·차단) / `advisory` (권장만) / `off` (Claude 직접 가능). `~/.claude/state/codex-policy` 마커로 즉시 전환 |
+| **🆕 플러그인 자동 갱신** | SessionStart hook이 7일 초과 감지 → 백그라운드 `claude plugin update` 일괄 → 다음 세션에 자비스 응답 첫 줄에 변경 알림 강제 노출 (`hooks/session-start-plugin-check.sh` + `weekly-plugin-update.sh`) |
 | **플러그인 26개** | superpowers / pm-skills / designer-skills 등 자동 설치 |
 
 ## 🚀 온보딩 (30초 시작)
