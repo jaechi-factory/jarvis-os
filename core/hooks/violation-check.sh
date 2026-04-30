@@ -13,13 +13,6 @@ mkdir -p "$state_dir"
 input=$(cat 2>/dev/null || echo "{}")
 transcript_path=$(echo "$input" | python3 -c "import sys,json; print(json.load(sys.stdin).get('transcript_path',''))" 2>/dev/null || echo "")
 
-# 디버그: input 구조 + transcript 추출 결과 dump (실전 작동 확인용 임시)
-debug_log="$HOME/.claude/state/violation-debug.log"
-echo "=== $(date '+%Y-%m-%d %H:%M:%S') ===" >> "$debug_log"
-echo "input keys: $(echo "$input" | python3 -c "import sys,json; print(list(json.load(sys.stdin).keys()))" 2>/dev/null)" >> "$debug_log"
-echo "transcript_path: $transcript_path" >> "$debug_log"
-echo "transcript exists: $([ -f "$transcript_path" ] && echo YES || echo NO)" >> "$debug_log"
-
 prompt_file="${state_dir}/last-prompt.txt"
 [ ! -f "$prompt_file" ] && exit 0
 
@@ -62,11 +55,6 @@ PY
     if echo "$last_assistant" | grep -qE "🧭 L1 \(direct"; then
         direct_label=1
     fi
-
-    # 디버그 dump
-    echo "last_assistant (300자): ${last_assistant:0:300}" >> "$debug_log"
-    echo "direct_label: $direct_label" >> "$debug_log"
-    echo "" >> "$debug_log"
 fi
 
 if [ "$direct_label" = "1" ]; then
