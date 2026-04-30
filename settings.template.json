@@ -178,6 +178,17 @@
           }
         ]
       }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/session-start-plugin-check.sh"
+          }
+        ]
+      }
     ]
   },
   "enabledPlugins": {
