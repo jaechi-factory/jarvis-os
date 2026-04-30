@@ -25,6 +25,7 @@
 | **Codex 위임 강제** | 코드 수정은 Codex가 / 판단·리뷰는 Claude가 |
 | **🆕 자가 회복 메커니즘** | 디렉터 누락 위반 감지 → 다음 턴 자비스에게 자동 회복 알림 inject (`hooks/violation-check.sh` + `violation-inject.sh`) |
 | **🆕 휘하 스킬 자동 발화 매핑** | 디렉터 6명 + L3 32명 정의에 키워드→스킬 매핑 분산 (총 약 340개 매핑). 디렉터 호출 시 자기 휘하 스킬 자동 후보로 |
+| **🆕 Codex 위임 정책 3단계** | `strict` (기본·차단) / `advisory` (권장만) / `off` (Claude 직접 가능). `~/.claude/state/codex-policy` 마커로 즉시 전환 |
 | **플러그인 26개** | superpowers / pm-skills / designer-skills 등 자동 설치 |
 
 ## 🚀 온보딩 (30초 시작)
@@ -112,14 +113,12 @@ Enter your name:
 
 ## 📜 라이선스
 
-**공개 전환 완료 (2026-04-30).** 정식 LICENSE 파일은 추가 예정.
+**[MIT License](./LICENSE)** — 자유롭게 사용·수정·재배포 가능. 저작권 표시(`Copyright (c) 2026 Ben (이치훈) · jaechi-factory`)만 유지하면 OK.
 
-지금은 다음 원칙으로 사용해 주세요:
-- ✅ 본인 환경에 자유롭게 설치·수정·사용
-- ✅ 학습·연구·개인 프로젝트 활용
-- ✅ Fork 후 본인 fork에서 수정
-- ⚠️ 상업적 재배포·재판매는 정식 LICENSE 추가 후 결정 (그때까지 보류)
-- ⚠️ Pull Request 환영 — 다만 공식 release 결정은 maintainer(`@jaechi-factory`)
+- ✅ 상업적 사용·재배포 가능
+- ✅ 수정·fork·사적 사용 자유
+- ✅ Pull Request 환영
+- ⚠️ 보증 없음 (`AS IS`)
 
 ## 🔄 v1.1 변경 사항 (2026-04-30)
 
@@ -145,6 +144,30 @@ Enter your name:
 
 ### 🔄 v1.0 → v1.1 업그레이드
 이미 v1.0 설치됐다면 `setup.sh` 다시 실행 시 자동 갱신 (기존 `~/.claude`는 `~/.claude.backup-YYYYMMDD-HHMMSS`로 백업).
+
+---
+
+## 🔄 v1.2 변경 사항 (2026-04-30)
+
+### 🆕 Codex 위임 정책 3단계 옵션
+
+설치 후 본인 작업 스타일에 맞게 정책 즉시 전환 가능 (`~/.claude/state/codex-policy` 마커 파일):
+
+| 정책 | 동작 | 추천 |
+|---|---|---|
+| `strict` (기본) | `.ts/.tsx/.js/.jsx/.css/.scss` 직접 수정 차단 → `mcp__codex-cli__codex` 강제 | Codex 활성 + 토큰 효율 우선 |
+| `advisory` | 차단 X, 권장 메시지만 표시 | Codex와 Claude 혼용 |
+| `off` | 메시지 없이 Claude 직접 수정 가능 | Codex 비활성·솔로 모드 |
+
+**전환 명령**:
+```bash
+echo "advisory" > ~/.claude/state/codex-policy   # 또는 strict / off
+```
+
+설치 직후 기본값은 `strict`. 설치 시 `setup.sh`가 prompt로 선택 받을 수 있음 (구현 예정).
+
+### 📜 LICENSE 추가
+MIT License (Copyright 2026 Ben · jaechi-factory). 상업 사용·재배포 자유.
 
 ---
 

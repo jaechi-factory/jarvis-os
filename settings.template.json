@@ -111,7 +111,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'path=$(echo \"$CLAUDE_TOOL_INPUT\" | python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get(\\\"file_path\\\",\\\"\\\"))\" 2>/dev/null); if echo \"$path\" | grep -qE \"\\.(ts|tsx|js|jsx|css|scss)$\"; then echo \"⛔ [Codex 위임 강제] 코드 파일 직접 수정 차단: $path — mcp__codex-cli__codex 사용. 예외: Codex 실패 복구 또는 사용자 명시 허가(직접 해).\"; exit 1; fi; exit 0'"
+            "command": "bash ~/.claude/hooks/codex-policy-gate.sh"
           }
         ]
       }
