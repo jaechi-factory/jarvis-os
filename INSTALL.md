@@ -1,4 +1,4 @@
-# INSTALL — JARVIS-OS v1.2 설치 가이드
+# INSTALL — JARVIS-OS v1.3 설치 가이드
 
 > 제작: Ben(이치훈) · GitHub @jaechi-factory
 
@@ -71,22 +71,66 @@ bash setup.sh
 - Rules/Commands/Agents/Prompts/Modes: `core/*` → `~/.claude/*`
 - MD 템플릿: `{{USER_NAME}}`를 입력 이름으로 치환
 - Memory templates: `memory-templates/*` 복사
-- Plugins 26개 + Skills 번들 자동 활성 (`settings.json`)
+- Plugins 26개 + Skills 번들 자동 활성 (`settings.json` 자동 병합/생성, v1.3)
 
-## ⚠️ settings.json 처리 방식 (기존 사용자 주의)
+## 🔀 settings.json 처리 방식 (v1.3 — 자동 병합)
 
-`setup.sh`는 기존 `~/.claude/settings.json`을 **`settings.json.before-jarvis-os`로 백업한 뒤 JARVIS-OS 템플릿(`settings.template.json`)으로 통째 교체**합니다. **자동 병합은 안 함**.
+`setup.sh`는 기존 `~/.claude/settings.json` 유무에 따라 자동 분기:
 
-기존에 사용자 정의 hook·permissions·MCP 설정이 있었다면:
+| 케이스 | 동작 |
+|---|---|
+| **기존 settings.json 없음** | `settings.template.json` 그대로 복사 (신규 설치) |
+| **기존 settings.json 있음** | 백업 → 자동 병합 → preview 생성 → 적용 (사용자 설정 보존) |
 
-1. 설치 직후 백업 위치: `~/.claude/settings.json.before-jarvis-os`
-2. 필요한 항목을 새 `~/.claude/settings.json`에 **수동으로 병합** 필요
-3. 병합 안 하면 기존 설정은 비활성화됨
+**자동 병합 4단계** (기존 사용자 케이스):
+1. `~/.claude/settings.json` → `settings.json.before-jarvis-os`로 백업
+2. `core/scripts/merge-settings.py`로 `settings.json.jarvis-merged-preview` 생성
+3. preview를 `~/.claude/settings.json`에 적용 (`mv`)
+4. 머지 결과·경고 stderr 출력 + 롤백 명령 안내
 
-**권장 작업** (설치 직후):
+**필드별 머지 정책**:
+
+| 필드 | 전략 | 충돌 시 |
+|---|---|---|
+| `permissions.allow` / `deny` / `additionalDirectories` | 합집합 + 중복 제거 (경로는 정규화) | N/A |
+| `permissions.defaultMode`, `theme`, `alwaysThinkingEnabled` | 단일값 | 사용자 우선 |
+| `hooks.<phase>` | matcher별 합집합. **JARVIS 먼저 + 사용자 나중** | command 정확 일치 시 1회만 등록 |
+| `enabledPlugins` | 합집합 | 사용자 false → false 유지 + 경고 |
+| `extraKnownMarketplaces` | 합집합 | source 다름 → 사용자 우선 + 경고 (fork/mirror/사내 source 보호) |
+| 알 수 없는 최상위 키 | passthrough | 사용자 값 그대로 보존 |
+
+### hook 병합 순서 (사용자가 알아둘 점)
+
+기본은 **JARVIS hook 먼저, 사용자 hook 나중** 실행. JARVIS hook(`audit-log`/`violation-check` 등)이 시스템 검증이라 사용자 hook 결과까지 측정하는 게 자연스러움.
+
+**보안/권한 관련 사용자 hook을 먼저 실행해야 하는 경우**: 설치 후 `~/.claude/settings.json`을 직접 열어서 `hooks.<phase>` 배열 안의 순서를 수동 조정.
+
+### 🔍 dry-run으로 설치 전 미리 보기 (v1.3 신규)
+
+실제 설치 전에 병합 결과만 시뮬:
+
 ```bash
-diff ~/.claude/settings.json.before-jarvis-os ~/.claude/settings.json
-# 필요한 항목 식별 후 새 파일에 옮기기
+bash setup.sh --dry-run-settings
+# 또는 alias
+bash setup.sh --dry-run
+```
+
+**dry-run 동작**:
+- 실제 파일 변경 0건 (`settings.json` 안 만지고, 백업도 안 만듦)
+- 기존 settings 있으면 임시 디렉토리에 preview 생성 → 기존 ↔ preview `diff -u` 출력
+- 종료 시 임시 디렉토리 자동 정리 (`trap EXIT`)
+- `exit 0`으로 깨끗 종료 (이름 온보딩·핵심 복사·`/check-rules` 단계 진행 X)
+
+**dry-run diff 읽을 때 주의사항**:
+- **JSON 키 순서 변경**은 의미상 변경 아님 (Python dict 삽입 순서 결과)
+- **macOS에서 `/tmp`와 `/private/tmp`는 같은 경로**로 정규화되어 둘 중 한쪽이 사라질 수 있음 (심볼릭 링크). 의도해서 둘 다 등록한 거였어도 결과는 한 쪽만 유지됨
+
+### 백업·롤백
+
+기존 사용자 설정은 항상 `~/.claude/settings.json.before-jarvis-os`에 보존. 자동 병합이 마음에 안 들면 한 줄로 되돌리기:
+
+```bash
+mv ~/.claude/settings.json.before-jarvis-os ~/.claude/settings.json
 ```
 
 ## 자동 설치 후 사용자 직접 설정 필요
@@ -175,6 +219,25 @@ WARN 사유: `rules/common/codex-delegation.md` 6.4KB + `pm-skills-routing.md` 9
 - Plugin(26) + 핵심 Skill 번들 활성 여부
 - 이름 치환 잔존(`{{USER_NAME}}`) 여부
 - MCP(codex/github/figma) 연결 감지 또는 수동 확인 필요 경고
+
+### settings.json 자동 병합 검증 (v1.3)
+
+기존 사용자라면 설치 전에 dry-run으로 병합 결과 미리 보기:
+
+```bash
+bash setup.sh --dry-run        # 또는 --dry-run-settings
+```
+
+**확인 포인트**:
+- "기존 settings.json 감지 → 자동 병합 시뮬레이션" 메시지 출력 확인
+- diff 섹션에서 추가/삭제될 항목 검토
+- ⚠️ 또는 ℹ️ 경고가 있으면 충돌 항목 (사용자 false 유지·source 충돌·passthrough 키 등) 의도한 결과인지 확인
+
+설치 후에는 백업 파일과 직접 비교도 가능:
+
+```bash
+diff ~/.claude/settings.json.before-jarvis-os ~/.claude/settings.json
+```
 
 ## 문제 발생 시
 

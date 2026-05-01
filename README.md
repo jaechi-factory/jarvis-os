@@ -1,7 +1,8 @@
-# JARVIS-OS v1.2
+# JARVIS-OS v1.3
 
 > 제작: Ben(이치훈) · GitHub @jaechi-factory
 > **Claude Code를 자비스처럼 똑똑하게 굴리는 운영체계**
+> v1.3 (2026-05-01): settings.json 자동 병합 설치 + dry-run preview
 > v1.2 (2026-05-01): Codex 위임 정책 3단계 + 플러그인 자동 갱신 + LICENSE 추가
 > v1.1 (2026-04-30): 자가 회복 메커니즘 + 디렉터·L3 휘하 스킬 자동 발화 매핑 + Codex hook 통합
 
@@ -105,20 +106,65 @@ Enter your name:
 - **사고 시 복구**: 백업 폴더로 되돌리기만 하면 끝
 - **defaultMode: acceptEdits**: Edit/Write는 자동 승인, Bash 첫 호출은 확인 (디자이너 친화)
 
-### ⚠️ settings.json 처리 방식 (기존 사용자 주의)
+### 🔀 settings.json 처리 방식 (v1.3 — 자동 병합)
 
-`setup.sh`는 기존 `~/.claude/settings.json`을 **`settings.json.before-jarvis-os`로 백업한 뒤 JARVIS-OS 템플릿으로 교체**합니다 (병합 X).
+`setup.sh`는 기존 `~/.claude/settings.json` 유무에 따라 자동 분기:
 
-기존에 사용자 정의 hook·permissions·MCP 설정이 있었다면:
+| 케이스 | 동작 |
+|---|---|
+| **기존 settings.json 없음** | `settings.template.json`을 그대로 복사 (신규 설치) |
+| **기존 settings.json 있음** | 백업 → 자동 병합 → preview 생성 → 적용 (사용자 설정 보존) |
 
-1. 설치 직후 `~/.claude/settings.json.before-jarvis-os`에 보존됨
-2. 필요한 항목을 새 `~/.claude/settings.json`에 **수동으로 병합**해야 유지됨
-3. 병합 안 하면 기존 설정은 비활성화됨 (백업 파일은 그대로 남아있음)
+**자동 병합 4단계** (기존 사용자 케이스):
+1. `~/.claude/settings.json` → `settings.json.before-jarvis-os`로 백업
+2. `core/scripts/merge-settings.py` 호출 → `settings.json.jarvis-merged-preview` 생성
+3. preview를 최종 `~/.claude/settings.json`에 적용 (`mv`)
+4. 롤백 명령 자동 안내 (실패 시): `mv settings.json.before-jarvis-os settings.json`
 
-권장 작업: 설치 직후 두 파일 diff로 비교 → 필요한 항목만 새 파일로 옮기기
+**머지 정책** (필드별):
+
+| 필드 | 전략 | 충돌 시 |
+|---|---|---|
+| `permissions.allow` / `deny` / `additionalDirectories` | 합집합 + 중복 제거 (경로는 정규화) | N/A |
+| `permissions.defaultMode`, `theme`, `alwaysThinkingEnabled` | 단일값 | 사용자 우선 |
+| `hooks.<phase>` | matcher별 합집합. **JARVIS 먼저 + 사용자 나중** | command 정확 일치 시 1회만 등록 |
+| `enabledPlugins` | 합집합 | 사용자 false → false 유지 + 경고 |
+| `extraKnownMarketplaces` | 합집합 | source 다름 → 사용자 우선 + 경고 (fork/mirror/사내 source 보호) |
+| 알 수 없는 최상위 키 | passthrough | 사용자 값 그대로 보존 |
+
+### 🪝 hook 병합 순서 (사용자가 알아둘 점)
+
+자동 병합 시 **JARVIS 시스템 hook이 먼저 실행되고 사용자 hook이 나중**에 실행돼요. 이유: JARVIS hook(`audit-log`/`violation-check` 등)이 시스템 검증 역할이라 사용자 hook 결과까지 측정하는 게 자연스러워요.
+
+**보안/권한 관련 사용자 hook을 먼저 실행해야 하는 경우**: 설치 후 `~/.claude/settings.json`을 직접 열어서 `hooks.<phase>` 배열 안의 순서를 수동 조정하면 돼요. JSON 그대로 편집해도 되고, 한 항목을 위로 옮기는 정도라 디자이너도 충분히 가능해요.
+
+### 🔍 dry-run으로 미리 보기 (v1.3 신규)
+
+설치 전 병합 결과를 미리 보고 싶으면:
 
 ```bash
-diff ~/.claude/settings.json.before-jarvis-os ~/.claude/settings.json
+bash setup.sh --dry-run-settings
+# 또는 alias
+bash setup.sh --dry-run
+```
+
+**dry-run 동작**:
+- 실제 파일 변경 0건 (`settings.json` 안 만지고, 백업도 안 만듦)
+- 기존 settings가 있으면 임시 디렉토리(`mktemp -d`)에 preview 생성
+- 기존 ↔ preview `diff -u` 출력
+- 종료 시 임시 디렉토리 자동 정리 (`trap EXIT`)
+- `exit 0`으로 깨끗하게 끝남 (이름 온보딩·핵심 복사·`/check-rules` 단계 진행 안 함)
+
+**dry-run diff 읽을 때 주의사항**:
+- **JSON 키 순서 변경**은 의미상 변경 아님 (Python dict 삽입 순서 결과)
+- **macOS에서 `/tmp`와 `/private/tmp`는 같은 경로**로 정규화되어 둘 중 한쪽이 사라질 수 있음 (심볼릭 링크). 의도해서 둘 다 등록한 거였어도 결과는 한 쪽만 유지됨
+
+### 백업·롤백
+
+기존 사용자 설정은 항상 `~/.claude/settings.json.before-jarvis-os`에 보존돼요. 자동 병합이 마음에 안 들면 한 줄로 되돌리기 가능:
+
+```bash
+mv ~/.claude/settings.json.before-jarvis-os ~/.claude/settings.json
 ```
 
 ## 🙋 사전 조건
@@ -137,7 +183,49 @@ diff ~/.claude/settings.json.before-jarvis-os ~/.claude/settings.json
 - ✅ Pull Request 환영
 - ⚠️ 보증 없음 (`AS IS`)
 
-## 🔄 v1.2 변경 사항 (현재 버전 · 2026-05-01)
+## 🔄 v1.3 변경 사항 (현재 버전 · 2026-05-01)
+
+### 🆕 settings.json 자동 병합 설치
+
+기존 사용자가 박아둔 `permissions.allow`·`hooks`·`enabledPlugins`·사용자 정의 키를 보존하면서 JARVIS-OS 템플릿을 덧입히는 자동 병합 모드.
+
+- **신규 사용자**: 기존 동작 (템플릿 통째 복사)
+- **기존 사용자**: 백업 → 자동 병합 → preview 생성 → 적용. 사용자 설정 유지
+- 머지 정책: 위 "🔀 settings.json 처리 방식" 섹션 참조
+- 백업: `~/.claude/settings.json.before-jarvis-os`로 무조건 보존
+- 머지 스크립트: `core/scripts/merge-settings.py` (Python 3, 단독 실행 가능)
+- 회귀 테스트: `tests/run-merge-tests.sh` (4 케이스 / 31 어설션, PASS=31 · FAIL=0)
+
+### 🆕 dry-run settings preview
+
+설치 전 병합 결과를 미리 볼 수 있는 옵션:
+
+```bash
+bash setup.sh --dry-run-settings   # 또는 --dry-run
+```
+
+- 실제 파일 변경 0건
+- 기존 settings가 있으면 임시 preview를 만들어 diff 출력
+- 임시 디렉토리는 종료 시 자동 정리 (`trap EXIT`)
+- 자세한 사용법은 위 "🔍 dry-run으로 미리 보기" 섹션 참조
+
+### 🆕 사용자 설정 보존 정책
+
+자동 병합 시 사용자 의도를 보호하는 5가지 룰:
+
+1. `permissions.defaultMode`·`theme`·`alwaysThinkingEnabled` → **사용자 우선**
+2. `enabledPlugins` 사용자 false 명시 → **false 유지** + 경고 (의도된 비활성)
+3. `extraKnownMarketplaces` source 다름 → **사용자 우선** + 경고 (fork/mirror/사내 source 보호)
+4. `hooks` 같은 command 중복 → 1회만 등록 (이중 실행 방지)
+5. 알 수 없는 최상위 키 → **passthrough** (사용자 값 그대로 보존)
+
+### 🔄 v1.2 → v1.3 업그레이드
+
+`setup.sh` 다시 실행하면 끝. 기존 `~/.claude/settings.json`이 있으니 자동 병합 모드로 동작해서 사용자 설정 잃지 않아요. 미리 결과 보고 싶으면 `--dry-run`부터.
+
+---
+
+## 🔄 v1.2 변경 사항 (2026-05-01)
 
 ### 🆕 Codex 위임 정책 3단계 옵션
 
@@ -179,7 +267,7 @@ MIT License (Copyright 2026 Ben · jaechi-factory). 상업 사용·재배포 자
 - 자동 로드 사이즈: 환경에 따라 ~53~55KB (목표 < 50KB, 약간 초과는 룰 누적으로 인한 자연 증가)
 
 ### 🔄 업그레이드
-이미 이전 버전 설치됐다면 `setup.sh` 다시 실행 시 자동 갱신 (기존 `~/.claude`는 `~/.claude.backup-YYYYMMDD-HHMMSS`로 백업). 단, **`settings.json`은 통째로 교체**되므로 기존 사용자 정의 설정이 있으면 백업 파일에서 수동 병합 필요 (아래 "🛡️ 안전" 섹션 참조).
+v1.2 시점에는 사용자가 백업 파일을 직접 비교·옮겨야 했지만, v1.3부터 자동 병합으로 변경됐어요 → 위 "🔄 v1.3 변경 사항 → 🔄 v1.2 → v1.3 업그레이드" 섹션 참조.
 
 ---
 
@@ -206,9 +294,9 @@ MIT License (Copyright 2026 Ben · jaechi-factory). 상업 사용·재배포 자
 
 ---
 
-## 🗺️ v1.3 TODO
+## 🗺️ 다음 TODO (v1.4 후보)
 
-- **settings.json 자동 병합 설치**: 기존 사용자 정의 설정(hook·permissions·MCP)을 `setup.sh`가 자동 감지·병합. 현재는 통째 교체 + 수동 병합 필요
+- ✅ ~~**settings.json 자동 병합 설치**~~ → v1.3에서 완료
 - **plugin 자동 업데이트 opt-in 전환**: 현재는 기본 활성. opt-in 마커(`~/.claude/state/plugin-auto-update`)로 사용자가 명시 활성화하는 흐름으로 변경 검토
 
 ---
