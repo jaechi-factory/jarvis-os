@@ -14,7 +14,7 @@
 #   - core/ → ~/.claude/ 복사 (룰·hook·command·prompt)
 #   - memory-templates/ → ~/.claude/projects/<slug>/memory/ 복사
 #   - {{USER_NAME}} placeholder를 입력한 이름으로 치환
-#   - settings.json 생성 (플러그인 26개 자동 enable)
+#   - settings.json 병합/생성 (기존 있으면 자동 병합, 없으면 템플릿 복사. 플러그인 26개 자동 enable)
 #   - /check-rules 실행해서 FAIL=0 정합성 검증 (일반 케이스: PASS=15·WARN=1·FAIL=0)
 #   - 자동 설치 불가 영역(MCP 계정 연동) 안내
 
@@ -325,18 +325,49 @@ if ! grep -q "user_identity.md" "$MEM_DIR/MEMORY.md" 2>/dev/null; then
 fi
 
 # ───────────────────────────────────────
-# 9. settings.json 생성
+# 9. settings.json 병합/생성
 # ───────────────────────────────────────
-log "[8/11] settings.json 생성 (플러그인/스킬)"
+log "[8/11] settings.json 병합/생성 (플러그인/스킬)"
 
-if [[ -f "$CLAUDE_DIR/settings.json" ]]; then
-  cp "$CLAUDE_DIR/settings.json" "$CLAUDE_DIR/settings.json.before-jarvis-os"
-  warn "  기존 settings.json → settings.json.before-jarvis-os로 백업"
+SETTINGS_TARGET="$CLAUDE_DIR/settings.json"
+SETTINGS_BACKUP="$CLAUDE_DIR/settings.json.before-jarvis-os"
+SETTINGS_PREVIEW="$CLAUDE_DIR/settings.json.jarvis-merged-preview"
+SETTINGS_TEMPLATE="$SCRIPT_DIR/settings.template.json"
+MERGE_SCRIPT="$SCRIPT_DIR/core/scripts/merge-settings.py"
+
+if [[ -f "$SETTINGS_TARGET" ]]; then
+  # 기존 사용자 settings 보유 → 자동 병합 모드
+  log "  기존 settings.json 감지 → 자동 병합 모드"
+
+  # (1) 백업
+  cp "$SETTINGS_TARGET" "$SETTINGS_BACKUP"
+  ok "  기존 settings 백업 완료 → settings.json.before-jarvis-os"
+
+  # (2) 병합 preview 생성 (merge-settings.py가 stderr에 경고/info 자동 출력)
+  if python3 "$MERGE_SCRIPT" \
+       --existing "$SETTINGS_TARGET" \
+       --template "$SETTINGS_TEMPLATE" \
+       --output "$SETTINGS_PREVIEW"; then
+    ok "  병합 preview 생성 완료 → settings.json.jarvis-merged-preview"
+  else
+    err "  merge-settings.py 실행 실패. 백업 보존됨: $SETTINGS_BACKUP"
+  fi
+
+  # (3) 적용 (preview → target)
+  mv "$SETTINGS_PREVIEW" "$SETTINGS_TARGET"
+  ok "  병합 결과 적용 완료 → settings.json"
+
+  # (4) 롤백 안내
+  echo "  💡 문제 시 롤백: mv \"$SETTINGS_BACKUP\" \"$SETTINGS_TARGET\""
+else
+  # 신규 설치 → 템플릿 통째 복사
+  log "  기존 settings.json 없음 → 템플릿 통째 복사 (신규 설치)"
+  cp "$SETTINGS_TEMPLATE" "$SETTINGS_TARGET"
+  ok "  settings.json 신규 생성"
 fi
 
-cp "$SCRIPT_DIR/settings.template.json" "$CLAUDE_DIR/settings.json"
 PLUGIN_COUNT=$(count_enabled_plugins)
-ok "  settings.json 생성 (enabledPlugins ${PLUGIN_COUNT}개)"
+ok "  enabledPlugins ${PLUGIN_COUNT}개 활성"
 ok "  skill 번들 자동 활성: superpowers / pm-skills / designer-skills / ui-ux-pro-max"
 ok "  defaultMode: acceptEdits (Edit/Write 자동 승인, Bash는 첫 호출 시 확인)"
 
