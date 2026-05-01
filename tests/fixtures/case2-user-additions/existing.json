@@ -1,0 +1,45 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(custom-tool:*)",
+      "Bash(my-script.sh)",
+      "Bash(*)"
+    ],
+    "deny": [
+      "Bash(*curl*example-evil.com*)"
+    ],
+    "defaultMode": "ask",
+    "additionalDirectories": [
+      "/Users/me/work"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/my-custom-pre-bash-hook.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/my-custom-stop-hook.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "alwaysThinkingEnabled": false,
+  "theme": "light",
+  "customField": {
+    "myProjectId": "abc-123"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "enabledPlugins": {
+    "claude-mem@thedotmack": false,
+    "compound-engineering@compound-engineering-plugin": true,
+    "my-private-plugin@my-marketplace": true
+  }
+}
