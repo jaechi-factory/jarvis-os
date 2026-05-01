@@ -142,7 +142,7 @@ claude mcp add <server-name>
 
 ## 7. JARVIS-OS 자체 업데이트
 
-ben이 새 룰·hook 추가하면:
+{{USER_NAME}}이 새 룰·hook 추가하면:
 
 ```bash
 cd ~/jarvis-os  # 또는 git clone 했던 위치

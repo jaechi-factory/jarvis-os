@@ -152,4 +152,4 @@ cp ~/.claude.backup-*/projects/*/memory/global/user_profile.md \
 
 GitHub Issues: https://github.com/jaechi-factory/jarvis-os/issues
 
-또는 ben에게 직접 연락.
+또는 Ben(제작자)에게 직접 연락.
