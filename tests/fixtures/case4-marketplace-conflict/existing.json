@@ -1,0 +1,22 @@
+{
+  "extraKnownMarketplaces": {
+    "pm-skills": {
+      "source": {
+        "source": "github",
+        "repo": "my-org/pm-skills-fork"
+      }
+    },
+    "compound-engineering-plugin": {
+      "source": {
+        "source": "github",
+        "repo": "EveryInc/compound-engineering-plugin"
+      }
+    },
+    "my-private-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "my-org/private-marketplace"
+      }
+    }
+  }
+}
