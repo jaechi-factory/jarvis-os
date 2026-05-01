@@ -21,6 +21,20 @@
 set -e
 
 # ───────────────────────────────────────
+# 인자 파싱 (Phase 3 — dry-run 옵션)
+# ───────────────────────────────────────
+#   --dry-run-settings : settings 병합 시뮬만 수행, 실제 파일 변경 없음
+#   --dry-run          : alias
+DRY_RUN_SETTINGS=0
+for arg in "$@"; do
+  case "$arg" in
+    --dry-run-settings|--dry-run)
+      DRY_RUN_SETTINGS=1
+      ;;
+  esac
+done
+
+# ───────────────────────────────────────
 # 0. 색깔·로그 함수
 # ───────────────────────────────────────
 RED='\033[0;31m'
@@ -98,6 +112,72 @@ else:
 PY
 }
 
+# ───────────────────────────────────────
+# dry-run 시뮬레이터 (Phase 3)
+# ───────────────────────────────────────
+# settings 병합 결과를 미리 보여주고 실제 파일 변경 없이 종료.
+# CLAUDE_DIR / SCRIPT_DIR 정의 후 호출되어야 함.
+run_dry_run_settings() {
+  local target="$CLAUDE_DIR/settings.json"
+  local template="$SCRIPT_DIR/settings.template.json"
+  local merge_script="$SCRIPT_DIR/core/scripts/merge-settings.py"
+
+  echo ""
+  log "[DRY-RUN] settings 병합 시뮬레이션 (실제 파일 변경 없음)"
+  echo ""
+
+  if [[ ! -f "$target" ]]; then
+    log "  기존 settings.json 없음 → 템플릿 적용 예정"
+    ok "  설치 모드: 신규 (템플릿 통째 복사)"
+    log "  실제 파일 생성 안 함 (dry-run)"
+    log "  실제 적용은 옵션 없이 실행: bash setup.sh"
+    # curl 케이스 임시 clone 정리
+    if [[ -n "${CLEANUP_TEMP:-}" ]]; then
+      rm -rf "${TEMP_REPO:-}"
+    fi
+    exit 0
+  fi
+
+  log "  기존 settings.json 감지 → 자동 병합 시뮬레이션"
+
+  # 임시 디렉토리 셋업 (dry-run 종료 시 자동 삭제)
+  local tmp_dir
+  tmp_dir=$(mktemp -d -t jarvis-dryrun.XXXXXX)
+  trap 'rm -rf "$tmp_dir"' EXIT
+
+  local preview="$tmp_dir/settings.json.jarvis-merged-preview"
+
+  if python3 "$merge_script" \
+       --existing "$target" \
+       --template "$template" \
+       --output "$preview"; then
+    ok "  병합 preview 생성 (임시): $preview"
+  else
+    err "  merge-settings.py 실행 실패"
+  fi
+
+  echo ""
+  log "  📊 기존 settings.json vs 병합 결과 diff:"
+  echo "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  if diff -u "$target" "$preview" 2>/dev/null | head -300 | sed 's/^/  /'; then
+    : # diff 출력은 stdout으로 이미 흘러감
+  fi
+  # 변화 없으면 diff exit 0 + 출력 빈 케이스
+  if diff -q "$target" "$preview" >/dev/null 2>&1; then
+    echo "  (변경 없음 — 기존 settings가 이미 병합 결과와 동일)"
+  fi
+  echo "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo ""
+  ok "  [DRY-RUN 종료] 실제 파일 변경 없음. 백업/적용 진행 안 함."
+  log "  실제 적용은 옵션 없이 실행: bash setup.sh"
+
+  # curl 케이스 임시 clone 정리
+  if [[ -n "${CLEANUP_TEMP:-}" ]]; then
+    rm -rf "${TEMP_REPO:-}"
+  fi
+  exit 0
+}
+
 verify_pass() {
   local name="$1"
   local detail="$2"
@@ -167,6 +247,15 @@ if [[ ! -f "$SCRIPT_DIR/core/CLAUDE.md" ]]; then
   CLEANUP_TEMP=1
 fi
 ok "  source: $SCRIPT_DIR"
+
+# ───────────────────────────────────────
+# Dry-run 분기 (Phase 3)
+# ───────────────────────────────────────
+# --dry-run-settings / --dry-run 옵션이면 settings 병합 시뮬만 수행 후 exit 0.
+# 일반 설치 경로(이름 온보딩 ~ /check-rules)는 진행하지 않음.
+if [[ "$DRY_RUN_SETTINGS" == "1" ]]; then
+  run_dry_run_settings
+fi
 
 # ───────────────────────────────────────
 # 4. 이름 온보딩
