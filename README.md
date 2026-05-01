@@ -23,10 +23,9 @@
 | **자동 정합성 검사** | `/check-rules` 16개 항목, 룰 변경 시 자동 발동 |
 | **Audit Log** | 모든 도구 호출 자동 기록 (거짓 보고 잡힘) |
 | **ABSOLUTE 소통** | 정보 양질 + 누구나 이해 + 존중 구어체 |
-| **Codex 위임 강제** | 코드 수정은 Codex가 / 판단·리뷰는 Claude가 |
 | **🆕 자가 회복 메커니즘** | 디렉터 누락 위반 감지 → 다음 턴 자비스에게 자동 회복 알림 inject (`hooks/violation-check.sh` + `violation-inject.sh`) |
 | **🆕 휘하 스킬 자동 발화 매핑** | 디렉터 6명 + L3 32명 정의에 키워드→스킬 매핑 분산 (총 약 340개 매핑). 디렉터 호출 시 자기 휘하 스킬 자동 후보로 |
-| **🆕 Codex 위임 정책 3단계** | `strict` (기본·차단) / `advisory` (권장만) / `off` (Claude 직접 가능). `~/.claude/state/codex-policy` 마커로 즉시 전환 |
+| **🆕 Codex 위임 정책 3단계** | `strict` / `advisory` / `off` 중 선택. 기본값은 `strict`. `~/.claude/state/codex-policy`로 즉시 전환 |
 | **🆕 플러그인 자동 갱신** | SessionStart hook이 7일 초과 감지 → 백그라운드 `claude plugin update` 일괄 → 다음 세션에 자비스 응답 첫 줄에 변경 알림 강제 노출 (`hooks/session-start-plugin-check.sh` + `weekly-plugin-update.sh`) |
 | **플러그인 26개** | superpowers / pm-skills / designer-skills 등 자동 설치 |
 
@@ -155,7 +154,7 @@ diff ~/.claude/settings.json.before-jarvis-os ~/.claude/settings.json
 echo "advisory" > ~/.claude/state/codex-policy   # 또는 strict / off
 ```
 
-설치 직후 기본값은 `strict`. 설치 시 `setup.sh`가 prompt로 선택 받을 수 있음 (구현 예정).
+설치 직후 기본값은 `strict`. 필요하면 위 명령으로 즉시 전환 가능.
 
 ### 🆕 플러그인 자동 갱신 (SessionStart hook 기반)
 
@@ -204,6 +203,13 @@ MIT License (Copyright 2026 Ben · jaechi-factory). 상업 사용·재배포 자
 
 ### 🔄 v1.0 → v1.1 업그레이드
 `setup.sh` 다시 실행 시 자동 갱신 (기존 `~/.claude`는 자동 백업).
+
+---
+
+## 🗺️ v1.3 TODO
+
+- **settings.json 자동 병합 설치**: 기존 사용자 정의 설정(hook·permissions·MCP)을 `setup.sh`가 자동 감지·병합. 현재는 통째 교체 + 수동 병합 필요
+- **plugin 자동 업데이트 opt-in 전환**: 현재는 기본 활성. opt-in 마커(`~/.claude/state/plugin-auto-update`)로 사용자가 명시 활성화하는 흐름으로 변경 검토
 
 ---
 
