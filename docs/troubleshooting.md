@@ -22,11 +22,12 @@ Ubuntu/Debian:
 sudo apt install python3
 ```
 
-### 깃허브 인증 실패 (private repo)
-ben한테 collaborator 초대 받은 후:
+### 깃허브 인증 실패
+public repo 클론 시 인증이 필요한 경우 (rate limit·SSH 키 미설정 등):
 ```bash
 gh auth login
 ```
+또는 HTTPS 클론을 SSH로 바꾸거나, gh CLI 없이 `git clone https://github.com/jaechi-factory/jarvis-os.git`로도 동일하게 받을 수 있어요 (public repo).
 
 ## 실행 단계 문제
 
@@ -145,7 +146,7 @@ cp ~/.claude.backup-*/projects/*/memory/global/user_profile.md \
 "자비스, /check-rules 돌려줘"
 ```
 
-PASS=16 나오면 시스템 정상. 그래도 자비스 응답 안 하면 Claude Code 재시작.
+**FAIL=0** 나오면 시스템 정상 (일반 케이스: PASS=15 · WARN=1 · FAIL=0). 그래도 자비스 응답 안 하면 Claude Code 재시작.
 
 ## 도움 요청
 

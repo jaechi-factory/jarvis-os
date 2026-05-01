@@ -73,6 +73,22 @@ bash setup.sh
 - Memory templates: `memory-templates/*` 복사
 - Plugins 26개 + Skills 번들 자동 활성 (`settings.json`)
 
+## ⚠️ settings.json 처리 방식 (기존 사용자 주의)
+
+`setup.sh`는 기존 `~/.claude/settings.json`을 **`settings.json.before-jarvis-os`로 백업한 뒤 JARVIS-OS 템플릿(`settings.template.json`)으로 통째 교체**합니다. **자동 병합은 안 함**.
+
+기존에 사용자 정의 hook·permissions·MCP 설정이 있었다면:
+
+1. 설치 직후 백업 위치: `~/.claude/settings.json.before-jarvis-os`
+2. 필요한 항목을 새 `~/.claude/settings.json`에 **수동으로 병합** 필요
+3. 병합 안 하면 기존 설정은 비활성화됨
+
+**권장 작업** (설치 직후):
+```bash
+diff ~/.claude/settings.json.before-jarvis-os ~/.claude/settings.json
+# 필요한 항목 식별 후 새 파일에 옮기기
+```
+
 ## 자동 설치 후 사용자 직접 설정 필요
 
 - GitHub MCP 토큰 발급/연동: https://github.com/settings/personal-access-tokens/new
@@ -152,7 +168,7 @@ WARN 사유: `rules/common/codex-delegation.md` 6.4KB + `pm-skills-routing.md` 9
 
 `setup.sh`가 설치 직후 아래 영역을 자동 점검해 PASS/WARN/FAIL로 출력합니다.
 
-- `/check-rules` 16/16 PASS 여부
+- `/check-rules` 정합성 검증 (정상 기준: **FAIL=0**, 일반 케이스 PASS=15 · WARN=1 · FAIL=0)
 - CLI 구조 + `claude` 명령 사용 가능 여부
 - Hook 파일 수 + 실행 권한
 - Rules/Commands/Agents/Modes 파일 수

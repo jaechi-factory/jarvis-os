@@ -1,7 +1,8 @@
-# JARVIS-OS v1.1
+# JARVIS-OS v1.2
 
 > 제작: Ben(이치훈) · GitHub @jaechi-factory
 > **Claude Code를 자비스처럼 똑똑하게 굴리는 운영체계**
+> v1.2 (2026-05-01): Codex 위임 정책 3단계 + 플러그인 자동 갱신 + LICENSE 추가
 > v1.1 (2026-04-30): 자가 회복 메커니즘 + 디렉터·L3 휘하 스킬 자동 발화 매핑 + Codex hook 통합
 
 영화 아이언맨의 자비스가 토니 스타크의 모든 걸 알아서 처리하듯, JARVIS-OS는 Claude Code 안에서 **5단 조직(Founder → CEO 자비스 → C-Level → Leader → Worker)** + **자동 검증** + **자가 치유**가 굴러가는 시스템이에요.
@@ -105,6 +106,22 @@ Enter your name:
 - **사고 시 복구**: 백업 폴더로 되돌리기만 하면 끝
 - **defaultMode: acceptEdits**: Edit/Write는 자동 승인, Bash 첫 호출은 확인 (디자이너 친화)
 
+### ⚠️ settings.json 처리 방식 (기존 사용자 주의)
+
+`setup.sh`는 기존 `~/.claude/settings.json`을 **`settings.json.before-jarvis-os`로 백업한 뒤 JARVIS-OS 템플릿으로 교체**합니다 (병합 X).
+
+기존에 사용자 정의 hook·permissions·MCP 설정이 있었다면:
+
+1. 설치 직후 `~/.claude/settings.json.before-jarvis-os`에 보존됨
+2. 필요한 항목을 새 `~/.claude/settings.json`에 **수동으로 병합**해야 유지됨
+3. 병합 안 하면 기존 설정은 비활성화됨 (백업 파일은 그대로 남아있음)
+
+권장 작업: 설치 직후 두 파일 diff로 비교 → 필요한 항목만 새 파일로 옮기기
+
+```bash
+diff ~/.claude/settings.json.before-jarvis-os ~/.claude/settings.json
+```
+
 ## 🙋 사전 조건
 
 - macOS (Linux도 가능, 일부 검증 필요)
@@ -121,34 +138,7 @@ Enter your name:
 - ✅ Pull Request 환영
 - ⚠️ 보증 없음 (`AS IS`)
 
-## 🔄 v1.1 변경 사항 (2026-04-30)
-
-### 🆕 추가
-- **자가 회복 메커니즘** (`hooks/violation-check.sh` + `hooks/violation-inject.sh`)
-  - Stop hook이 직전 턴 디렉터 키워드 매칭 + Agent 호출 0건 감지 → `.last-violation` 기록
-  - 다음 턴 시작 시 UserPromptSubmit hook이 자비스에게 회복 알림 inject
-  - 자비스가 알림 보고 자동으로 디렉터 호출하거나 `🧭 L1 (direct · 사유)` 명시
-  - 직전 턴 응답에 `🧭 L1 (direct` 라벨 있으면 면제 (false positive 방지)
-- **디렉터 6명 휘하 스킬 매핑** (`agents/<director>.md`의 "🎯 휘하 스킬 자동 발화 후보" 섹션)
-- **L3 32명 자기 핵심 스킬 매핑** (`agents/<L3>.md`의 "🎯 핵심 사용 스킬" 섹션)
-- **AGENTS_SYSTEM 트리거 표 STRICT 강화** + direct 면제 명시 + 자비스 OS 자체 작업 면제
-
-### 🔧 정비
-- **Codex hook 7개 → 3개 통합** (`codex-gate-pre/post/summary.sh`)
-  - 옛 5개(`codex-declaration-check`, `codex-log`, `codex-size-check`, `codex-statusline`, `codex-turn-reset`)는 `hooks/_archive_codex/`로 이동
-  - 통합 hook은 비가역 차단 + 고위험 경로 감지 + Codex 적대적 리뷰 강제
-- **`check-rules.sh` SLUG 점→대시 치환 패치** (예: `/Users/jane.smith` → `-Users-jane-smith`)
-
-### 📊 정합성
-- `/check-rules`: PASS 15 / WARN 1 / FAIL 0 (총 16 검사)
-- 자동 로드 사이즈: ~53KB (디렉터·L3 매핑은 호출 시만 로드)
-
-### 🔄 v1.0 → v1.1 업그레이드
-이미 v1.0 설치됐다면 `setup.sh` 다시 실행 시 자동 갱신 (기존 `~/.claude`는 `~/.claude.backup-YYYYMMDD-HHMMSS`로 백업).
-
----
-
-## 🔄 v1.2 변경 사항 (2026-04-30)
+## 🔄 v1.2 변경 사항 (현재 버전 · 2026-05-01)
 
 ### 🆕 Codex 위임 정책 3단계 옵션
 
@@ -167,8 +157,53 @@ echo "advisory" > ~/.claude/state/codex-policy   # 또는 strict / off
 
 설치 직후 기본값은 `strict`. 설치 시 `setup.sh`가 prompt로 선택 받을 수 있음 (구현 예정).
 
+### 🆕 플러그인 자동 갱신 (SessionStart hook 기반)
+
+**기본 동작**: 설치된 모든 Claude Code 플러그인을 매주 1회 자동 점검·갱신.
+
+- **트리거**: SessionStart hook이 `~/.claude/state/last-plugin-update`의 마지막 점검 시점 확인. **7일 초과 시 자동 발동**
+- **실행**: `nohup`으로 백그라운드 실행 (세션 시작 안 막음). 모든 플러그인에 `claude plugin update` 일괄 호출
+- **알림**: 변경된 플러그인이 1개 이상이면 `~/.claude/notifications/plugin-update-YYYYMMDD.md` 작성 → 다음 세션 시작 시 자비스 컨텍스트에 자동 inject → 메모리 룰(`feedback_plugin_update_alert.md`)로 응답 첫 줄에 강제 노출
+- **수동 실행**: `bash ~/.claude/hooks/weekly-plugin-update.sh`
+- **강제 트리거**: `echo 0 > ~/.claude/state/last-plugin-update` (다음 세션 시작 시 즉시 실행)
+- **파일**: `core/hooks/session-start-plugin-check.sh`, `core/hooks/weekly-plugin-update.sh`
+
+**한계**:
+- Mac sleep 중에는 발동 X (Claude Code 켜야 SessionStart hook 발동). 며칠 안 켜도 첫 세션에서 자동 캐치업
+- "Restart to apply" — 업데이트된 그 세션은 구버전, 다음 세션부터 적용
+
 ### 📜 LICENSE 추가
 MIT License (Copyright 2026 Ben · jaechi-factory). 상업 사용·재배포 자유.
+
+### 📊 정합성
+- `/check-rules`: **FAIL=0** (정상 케이스: PASS=15 · WARN=1 · FAIL=0, 총 16 검사)
+- 자동 로드 사이즈: 환경에 따라 ~53~55KB (목표 < 50KB, 약간 초과는 룰 누적으로 인한 자연 증가)
+
+### 🔄 업그레이드
+이미 이전 버전 설치됐다면 `setup.sh` 다시 실행 시 자동 갱신 (기존 `~/.claude`는 `~/.claude.backup-YYYYMMDD-HHMMSS`로 백업). 단, **`settings.json`은 통째로 교체**되므로 기존 사용자 정의 설정이 있으면 백업 파일에서 수동 병합 필요 (아래 "🛡️ 안전" 섹션 참조).
+
+---
+
+## 🔄 v1.1 변경 이력 (2026-04-30)
+
+### 🆕 추가
+- **자가 회복 메커니즘** (`hooks/violation-check.sh` + `hooks/violation-inject.sh`)
+  - Stop hook이 직전 턴 디렉터 키워드 매칭 + Agent 호출 0건 감지 → `.last-violation` 기록
+  - 다음 턴 시작 시 UserPromptSubmit hook이 자비스에게 회복 알림 inject
+  - 자비스가 알림 보고 자동으로 디렉터 호출하거나 `🧭 L1 (direct · 사유)` 명시
+  - 직전 턴 응답에 `🧭 L1 (direct` 라벨 있으면 면제 (false positive 방지)
+- **디렉터 6명 휘하 스킬 매핑** (`agents/<director>.md`의 "🎯 휘하 스킬 자동 발화 후보" 섹션)
+- **L3 32명 자기 핵심 스킬 매핑** (`agents/<L3>.md`의 "🎯 핵심 사용 스킬" 섹션)
+- **AGENTS_SYSTEM 트리거 표 STRICT 강화** + direct 면제 명시 + 자비스 OS 자체 작업 면제
+
+### 🔧 정비
+- **Codex hook 7개 → 3개 통합** (`codex-gate-pre/post/summary.sh`)
+  - 옛 5개(`codex-declaration-check`, `codex-log`, `codex-size-check`, `codex-statusline`, `codex-turn-reset`)는 `hooks/_archive_codex/`로 이동
+  - 통합 hook은 비가역 차단 + 고위험 경로 감지 + Codex 적대적 리뷰 강제
+- **`check-rules.sh` SLUG 점→대시 치환 패치** (예: `/Users/jane.smith` → `-Users-jane-smith`)
+
+### 🔄 v1.0 → v1.1 업그레이드
+`setup.sh` 다시 실행 시 자동 갱신 (기존 `~/.claude`는 자동 백업).
 
 ---
 

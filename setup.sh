@@ -15,7 +15,7 @@
 #   - memory-templates/ → ~/.claude/projects/<slug>/memory/ 복사
 #   - {{USER_NAME}} placeholder를 입력한 이름으로 치환
 #   - settings.json 생성 (플러그인 26개 자동 enable)
-#   - /check-rules 실행해서 16/16 PASS 검증
+#   - /check-rules 실행해서 FAIL=0 정합성 검증 (일반 케이스: PASS=15·WARN=1·FAIL=0)
 #   - 자동 설치 불가 영역(MCP 계정 연동) 안내
 
 set -e
@@ -351,7 +351,8 @@ if [[ -x "$CLAUDE_DIR/hooks/check-rules.sh" ]]; then
   CHECK_RULES_OUTPUT=$(bash "$CLAUDE_DIR/hooks/check-rules.sh" 2>&1 || true)
   echo "$CHECK_RULES_OUTPUT" | tail -22
   echo ""
-  if echo "$CHECK_RULES_OUTPUT" | grep -q "PASS=16"; then
+  # 정합성 통과 기준: FAIL=0 (PASS 수는 환경별 차이 가능, FAIL이 0이면 정상)
+  if echo "$CHECK_RULES_OUTPUT" | grep -qE "FAIL=0( |$|\s)"; then
     CHECK_RULES_PASS=1
   fi
 else
@@ -368,9 +369,9 @@ VERIFY_WARN=0
 VERIFY_FAIL=0
 
 if [[ "$CHECK_RULES_PASS" -eq 1 ]]; then
-  verify_pass "/check-rules" "16/16 PASS 확인"
+  verify_pass "/check-rules" "FAIL=0 (정합성 통과)"
 else
-  verify_warn "/check-rules" "16/16 PASS를 파싱하지 못함 (출력 확인 필요)"
+  verify_warn "/check-rules" "FAIL이 0이 아니거나 파싱 실패 (출력 확인 필요)"
 fi
 
 if command -v claude >/dev/null 2>&1 && [[ -d "$CLAUDE_DIR" ]] && [[ -d "$MEM_DIR" ]]; then
