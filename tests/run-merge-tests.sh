@@ -9,6 +9,11 @@ ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 MERGE="$ROOT_DIR/core/scripts/merge-settings.py"
 TEMPLATE="$ROOT_DIR/settings.template.json"
 
+# 테스트 산출물(actual.json / stderr.log)은 임시 디렉토리에 저장.
+# fixtures 디렉토리는 existing.json만 유지 (재현성·git 청결).
+TMP_DIR="$(mktemp -d -t jarvis-merge-tests.XXXXXX)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
 PASS=0
 FAIL=0
 
@@ -16,8 +21,10 @@ run_case() {
     local case_dir="$1"
     local name=$(basename "$case_dir")
     local existing="$case_dir/existing.json"
-    local actual="$case_dir/actual.json"
-    local stderr_log="$case_dir/stderr.log"
+    local tmp_case_dir="$TMP_DIR/$name"
+    mkdir -p "$tmp_case_dir"
+    local actual="$tmp_case_dir/actual.json"
+    local stderr_log="$tmp_case_dir/stderr.log"
 
     echo ""
     echo "═══════════════════════════════════════════"
